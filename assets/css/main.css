@@ -532,6 +532,27 @@ article.post .footnotes {
 .post-actions .act-like.on { color: #c92a2a; border-color: #c92a2a; }
 .post-actions .act-save.on { color: var(--paper-accent); border-color: var(--paper-accent); }
 
+/* ---------- Print / PDF (watermarked) ---------- */
+.print-watermark, .print-copyright { display: none; }
+@media print {
+  .nav, .side-nav, .nav-overlay, .footer, .mascot, .mascot-bubble,
+  .toc-drawer, .post-actions, .demo-banner { display: none !important; }
+  body, .post-surface { background: #fff !important; }
+  .post-wrap { padding: 0; max-width: 100%; }
+  .print-watermark {
+    display: block; position: fixed;             /* fixed = repeats on every printed page */
+    top: 42%; left: 0; right: 0; text-align: center;
+    transform: rotate(-28deg); z-index: 999; pointer-events: none;
+    font-family: var(--mono); font-size: 2rem; letter-spacing: .08em;
+    color: rgba(0, 0, 0, 0.10);
+  }
+  .print-copyright {
+    display: block; margin-top: 3em; padding-top: 1em;
+    border-top: 1px solid #bbb; font-size: .78rem; color: #555;
+    font-family: var(--mono);
+  }
+}
+
 /* ---------- Responsive ---------- */
 @media (max-width: 900px) {
   .post-wrap { grid-template-columns: 1fr; }

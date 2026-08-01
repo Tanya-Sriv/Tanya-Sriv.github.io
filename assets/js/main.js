@@ -287,6 +287,61 @@ if (actions) {
   });
   render();
 
+  // ---- citation: APA + BibTeX popover with copy buttons ----
+  const citeBtn = actions.querySelector(".act-cite");
+  const citePop = document.getElementById("cite-pop");
+  if (citeBtn && citePop) {
+    const year = actions.dataset.year || new Date().getFullYear();
+    const url = location.href.split("#")[0];
+    const slug = path.replace(/[^\w]+/g, "").slice(0, 24) || "post";
+    document.getElementById("cite-apa").textContent =
+      "Srivastava, T. (" + year + "). " + title + ". tanya-sriv.github.io. " + url;
+    document.getElementById("cite-bib").textContent =
+      "@misc{srivastava" + year + slug + ",\n  author = {Srivastava, Tanya},\n" +
+      "  title = {" + title + "},\n  year = {" + year + "},\n" +
+      "  howpublished = {\\url{" + url + "}}\n}";
+    citeBtn.addEventListener("click", () => { citePop.hidden = !citePop.hidden; });
+    citePop.querySelectorAll(".cite-copy").forEach(b => b.addEventListener("click", () => {
+      navigator.clipboard.writeText(document.getElementById(b.dataset.for).textContent)
+        .then(() => { b.textContent = "copied!"; setTimeout(() => b.textContent = "copy", 1300); });
+    }));
+  }
+
+  // ---- PDF: direct file download (html2pdf) with watermark + citation;
+  //      falls back to print-to-PDF if the library isn't available ----
+  const pdfBtn = actions.querySelector(".act-pdf");
+  if (pdfBtn) pdfBtn.addEventListener("click", () => {
+    gcEvent("pdf" + path);
+    const art = document.querySelector("article.post");
+    if (window.html2pdf && art) {
+      const clone = art.cloneNode(true);
+      clone.querySelectorAll(".post-actions,.cite-pop,.print-watermark,pre .copy-btn")
+        .forEach(n => n.remove());
+      const cp = clone.querySelector(".print-copyright");
+      if (cp) cp.style.cssText = "display:block;margin-top:3em;padding-top:1em;border-top:1px solid #bbb;font-size:.78rem;color:#555";
+      const wrap = document.createElement("div");
+      wrap.style.cssText = "position:relative;background:#fff;color:#1c1e21;padding:28px;width:700px;font-family:Georgia,serif";
+      wrap.appendChild(clone);
+      document.body.appendChild(wrap);                 // must be in DOM to measure
+      const h = Math.max(wrap.scrollHeight, 1000);
+      for (let y = 300; y < h; y += 850) {             // watermark roughly once per page
+        const wm = document.createElement("div");
+        wm.textContent = "© Tanya Srivastava · tanya-sriv.github.io";
+        wm.style.cssText = "position:absolute;left:0;right:0;top:" + y +
+          "px;text-align:center;transform:rotate(-28deg);font-size:26px;" +
+          "color:rgba(0,0,0,.10);pointer-events:none;font-family:monospace";
+        wrap.appendChild(wm);
+      }
+      const fname = (title || "post").toLowerCase().replace(/[^\w]+/g, "-").replace(/^-|-$/g, "") + ".pdf";
+      html2pdf().set({
+        margin: [12, 12], filename: fname,
+        html2canvas: { scale: 2 }, jsPDF: { unit: "mm", format: "a4" }
+      }).from(wrap).save().then(() => wrap.remove()).catch(() => { wrap.remove(); window.print(); });
+    } else {
+      window.print();      // print stylesheet adds watermark + copyright + citation
+    }
+  });
+
   // ---- read counter: fires once when the reader reaches ~85% of the article ----
   const art = document.querySelector("article.post");
   if (art) {

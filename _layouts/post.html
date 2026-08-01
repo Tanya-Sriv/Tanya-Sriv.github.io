@@ -10,11 +10,25 @@ layout: default
     {% if page.tags.size > 0 %} · {% for t in page.tags %}<a href="{{ '/blog/' | relative_url }}#{{ t }}">#{{ t }}</a> {% endfor %}{% endif %}
   </div>
   <h1>{{ page.title }}</h1>
-  <div class="post-actions" data-path="{{ page.url }}" data-title="{{ page.title | escape }}">
+  <div class="post-actions" data-path="{{ page.url }}" data-title="{{ page.title | escape }}" data-year="{{ page.date | date: '%Y' }}">
     <button class="act-like" title="Like this post">♥ <span>like</span></button>
     <button class="act-save" title="Save for later">⚑ <span>save</span></button>
+    <button class="act-pdf" title="Download as watermarked PDF">⤓ <span>pdf</span></button>
+    <button class="act-cite" title="Cite this post">❞ <span>cite</span></button>
+  </div>
+  <div class="cite-pop" id="cite-pop" hidden>
+    <div class="cite-row"><strong>APA</strong><button class="ed-btn cite-copy" data-for="cite-apa">copy</button></div>
+    <pre id="cite-apa"></pre>
+    <div class="cite-row"><strong>BibTeX</strong><button class="ed-btn cite-copy" data-for="cite-bib">copy</button></div>
+    <pre id="cite-bib"></pre>
   </div>
   {{ content }}
+  <div class="print-watermark" aria-hidden="true">© {{ site.author.name }} · tanya-sriv.github.io</div>
+  <p class="print-copyright">© {{ site.time | date: "%Y" }} {{ site.author.name }}. All rights reserved.
+  Downloaded from tanya-sriv.github.io — please link back rather than republish.<br>
+  <strong>Cite as:</strong> Srivastava, T. ({{ page.date | date: "%Y" }}).
+  <em>{{ page.title }}</em>. tanya-sriv.github.io. {{ page.url | absolute_url }}</p>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 </article>
 {% include toc.html html=content %}
 </div>
