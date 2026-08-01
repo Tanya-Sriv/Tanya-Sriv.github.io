@@ -1,6 +1,6 @@
 title: Tanya Srivastava
 description: >-
-  GPU & embedded systems infrastructure - heterogeneous SoCs, firmware
+  GPU & embedded systems infrastructure — heterogeneous SoCs, firmware
   workload scheduling, and the tooling that keeps silicon honest.
 url: "https://tanya-sriv.github.io"
 baseurl: ""
@@ -11,11 +11,25 @@ author:
   linkedin: https://www.linkedin.com/in/tanya-sriv/
   email: tanya.1108srivastava@gmail.com
 
-# Your Medium profile. When set, a "medium" link appears in the nav.
+# Your Medium profile (e.g. https://medium.com/@tanya-sriv). When set, a
+# "medium ↗" link appears in the nav and reroutes visitors to your Medium page.
+# Leave empty to hide the link.
 medium: ""
 
-# Analytics (GoatCounter). Set to your dashboard code; empty disables tracking.
+# Analytics (GoatCounter). Set this to the code you pick when creating your
+# free account at goatcounter.com — e.g. "tanya-sriv" if your dashboard is
+# https://tanya-sriv.goatcounter.com. Leave empty to disable tracking.
 goatcounter: tanya-sriv
+
+# SEO verification codes — paste the code each tool gives you (content="..."
+# value only). Empty = tag not rendered.
+google_site_verification: ""   # Google Search Console → HTML tag method
+bing_site_verification: ""     # Bing Webmaster Tools (or import from GSC)
+ahrefs_site_verification: ""   # Ahrefs Webmaster Tools
+
+plugins:
+  - jekyll-sitemap   # generates /sitemap.xml for Search Console / Bing / Ahrefs
+  - jekyll-feed      # generates /feed.xml (RSS) — readers + crawlers
 
 markdown: kramdown
 kramdown:
@@ -25,6 +39,7 @@ kramdown:
 permalink: /blog/:year/:month/:title/
 
 exclude:
+  - preview
   - README.md
   - Gemfile
   - Gemfile.lock
