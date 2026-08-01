@@ -120,6 +120,98 @@ body {
 .post-list h3 a:hover { color: var(--accent); }
 .post-list .excerpt { color: var(--text-dim); max-width: 680px; }
 
+/* ---------- Post page: editorial "paper" surface ---------- */
+.post-surface { background: var(--paper); color: var(--paper-text); }
+.post-wrap {
+  max-width: calc(var(--maxw-prose) + 300px);
+  margin: 0 auto;
+  padding: 48px 24px 96px;
+  display: grid;
+  grid-template-columns: minmax(0, var(--maxw-prose)) 240px;
+  gap: 48px;
+}
+
+article.post { font-family: var(--serif); font-size: 1.12rem; line-height: 1.75; }
+article.post .post-meta { font-family: var(--mono); font-size: 0.8rem; color: var(--paper-dim); }
+article.post h1 { font-size: 2.3rem; line-height: 1.2; margin: 10px 0 6px; }
+article.post h2 { font-size: 1.6rem; margin-top: 2.2em; }
+article.post h3 { font-size: 1.25rem; margin-top: 1.8em; }
+article.post h4 { font-size: 1.05rem; }
+article.post a { color: var(--paper-accent); }
+article.post img { max-width: 100%; border-radius: 8px; }
+article.post blockquote {
+  margin: 1.5em 0; padding: 2px 0 2px 20px;
+  border-left: 3px solid var(--paper-accent);
+  color: var(--paper-dim); font-style: italic;
+}
+
+/* Tables — the thing Medium can't do */
+article.post table {
+  border-collapse: collapse; width: 100%; margin: 1.5em 0;
+  font-family: var(--sans); font-size: 0.95rem;
+}
+article.post th, article.post td {
+  border: 1px solid var(--paper-border); padding: 9px 13px; text-align: left;
+}
+article.post th { background: #efece4; }
+article.post tr:nth-child(even) td { background: #fbfaf7; }
+
+/* Code — highlighted, with copy button */
+article.post code {
+  font-family: var(--mono); font-size: 0.85em;
+  background: #ece9e1; border-radius: 4px; padding: 2px 5px;
+}
+article.post pre {
+  position: relative;
+  background: var(--bg-raised); color: var(--text);
+  border-radius: 10px; padding: 18px; overflow-x: auto;
+  font-size: 0.85rem; line-height: 1.55;
+}
+article.post pre code { background: none; padding: 0; color: inherit; }
+.copy-btn {
+  position: absolute; top: 8px; right: 8px;
+  font-family: var(--mono); font-size: 0.7rem;
+  background: var(--border); color: var(--text);
+  border: none; border-radius: 6px; padding: 4px 10px; cursor: pointer;
+  opacity: 0; transition: opacity .15s;
+}
+pre:hover .copy-btn { opacity: 1; }
+.copy-btn.copied { background: var(--accent); color: #08260d; }
+
+/* Rouge token colors (dark block) — matches GitHub-dark-ish */
+.highlight .k, .highlight .kd, .highlight .kn, .highlight .kt { color: #ff7b72; }
+.highlight .s, .highlight .s1, .highlight .s2, .highlight .sb { color: #a5d6ff; }
+.highlight .c, .highlight .c1, .highlight .cm { color: #8b949e; font-style: italic; }
+.highlight .nf, .highlight .fm, .highlight .nc { color: #d2a8ff; }
+.highlight .mi, .highlight .mf, .highlight .no, .highlight .bp { color: #79c0ff; }
+.highlight .o, .highlight .ow { color: #ff7b72; }
+/* legacy preview classes */
+.hl-k { color: #ff7b72; } .hl-s { color: #a5d6ff; }
+.hl-c { color: #8b949e; font-style: italic; }
+.hl-f { color: #d2a8ff; } .hl-n { color: #79c0ff; }
+
+/* Sticky TOC — author-visible on desktop AND collapsible on mobile */
+.toc {
+  position: sticky; top: 32px; align-self: start;
+  font-family: var(--sans); font-size: 0.85rem;
+  border-left: 1px solid var(--paper-border); padding-left: 18px;
+}
+.toc .toc-title {
+  font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.08em;
+  text-transform: uppercase; color: var(--paper-dim); margin-bottom: 10px;
+}
+.toc ol { list-style: none; margin: 0; padding: 0; }
+.toc li { margin: 7px 0; }
+.toc li.toc-h3 { padding-left: 14px; }
+.toc a { color: var(--paper-dim); text-decoration: none; }
+.toc a:hover, .toc a.active { color: var(--paper-accent); }
+
+/* Footnotes */
+article.post .footnotes {
+  margin-top: 3em; padding-top: 1em; border-top: 1px solid var(--paper-border);
+  font-size: 0.9rem; color: var(--paper-dim);
+}
+
 /* ---------- Footer ---------- */
 .footer {
   border-top: 1px solid var(--border);

@@ -1,0 +1,17 @@
+---
+layout: default
+---
+<div class="post-surface">
+<div class="post-wrap">
+<article class="post">
+  <div class="post-meta">
+    {{ page.date | date: "%Y-%m-%d" }}
+    {% if page.read_time %} · {{ page.read_time }}{% endif %}
+    {% if page.tags.size > 0 %} · {% for t in page.tags %}<a href="{{ '/blog/' | relative_url }}#{{ t }}">#{{ t }}</a> {% endfor %}{% endif %}
+  </div>
+  <h1>{{ page.title }}</h1>
+  {{ content }}
+</article>
+{% include toc.html html=content %}
+</div>
+</div>

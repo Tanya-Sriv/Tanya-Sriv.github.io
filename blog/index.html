@@ -1,0 +1,20 @@
+---
+layout: default
+title: Blog
+---
+<header class="hero">
+  <div class="prompt">[tanya@sriv:~$] <span class="path">cat blog/*</span><span class="cursor"></span></div>
+  <p class="tagline">Notes on GPUs, embedded systems, and whatever else I'm building. A mix of tech topics — deep dives, tooling, and lessons learned.</p>
+</header>
+
+<section class="section">
+  <ul class="post-list">
+    {% for post in site.posts %}
+    <li>
+      <div class="date">{{ post.date | date: "%Y-%m-%d" }}{% for t in post.tags %} · #{{ t }}{% endfor %}</div>
+      <h3><a href="{{ post.url | relative_url }}">{{ post.title }}</a></h3>
+      <p class="excerpt">{{ post.excerpt | strip_html | truncate: 200 }}</p>
+    </li>
+    {% endfor %}
+  </ul>
+</section>

@@ -1,0 +1,31 @@
+{% comment %}
+  Builds a sidebar TOC from the post's h2/h3 headings.
+  Kramdown auto-generates matching ids for headings.
+  Usage: {% include toc.html html=content %}
+{% endcomment %}
+{% assign chunks = include.html | split: '<h2' %}
+{% assign items = "" | split: "" %}
+{% for chunk in chunks offset: 1 %}
+  {% assign h2 = chunk | split: '</h2>' | first %}
+  {% assign id = h2 | split: 'id="' | last | split: '"' | first %}
+  {% assign text = h2 | split: '>' | last %}
+  {% capture li %}<li><a href="#{{ id }}">{{ text | strip_html }}</a></li>{% endcapture %}
+  {% assign items = items | push: li %}
+  {% assign body = chunk | split: '</h2>' | last %}
+  {% assign subchunks = body | split: '<h3' %}
+  {% for sub in subchunks offset: 1 %}
+    {% assign h3 = sub | split: '</h3>' | first %}
+    {% assign sid = h3 | split: 'id="' | last | split: '"' | first %}
+    {% assign stext = h3 | split: '>' | last %}
+    {% capture sli %}<li class="toc-h3"><a href="#{{ sid }}">{{ stext | strip_html }}</a></li>{% endcapture %}
+    {% assign items = items | push: sli %}
+  {% endfor %}
+{% endfor %}
+{% if items.size > 0 %}
+<aside class="toc">
+  <div class="toc-title">On this page</div>
+  <ol>
+    {% for item in items %}{{ item }}{% endfor %}
+  </ol>
+</aside>
+{% endif %}
