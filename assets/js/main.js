@@ -163,6 +163,29 @@ if (mascot) {
     if (e.animationName === "mascot-jump") mascot.classList.remove("jump");
   });
 
+  // ----- roaming: every so often he ROLLS along the bottom of the page.
+  // Wheel physics: rotation angle = distance / circumference * 360, so his
+  // body turns exactly as far as a wheel of his size would.
+  const reducedMotion = matchMedia("(prefers-reduced-motion: reduce)");
+  const svgEl = mascot.querySelector("svg");
+  let roamX = 0, rollDeg = 0;
+  function roam() {
+    if (reducedMotion.matches || document.hidden) { scheduleRoam(); return; }
+    const range = Math.max(0, window.innerWidth - 140);
+    const target = -Math.random() * range;             // 0 = home (right edge)
+    const dx = target - roamX;
+    if (Math.abs(dx) < 40) { scheduleRoam(); return; } // skip tiny shuffles
+    const dur = Math.max(1.6, Math.abs(dx) / 130);     // ~130 px/s stroll
+    rollDeg += (dx / (2 * Math.PI * 46)) * 360;        // wheel radius ≈ his half-height
+    mascot.style.transition = `transform ${dur}s ease-in-out`;
+    mascot.style.transform = `translateX(${target}px)`;
+    svgEl.style.transition = `transform ${dur}s ease-in-out`;
+    svgEl.style.transform = `rotate(${rollDeg}deg)`;
+    roamX = target;
+    scheduleRoam();
+  }
+  function scheduleRoam() { setTimeout(roam, 7000 + Math.random() * 9000); }
+  scheduleRoam();
 }
 
 // Copy buttons on code blocks
