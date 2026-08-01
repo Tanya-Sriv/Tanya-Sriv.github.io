@@ -31,12 +31,18 @@
 <div class="nav-overlay" id="nav-overlay"></div>
 <aside class="side-nav" id="side-nav">
   <div class="side-title">[tanya@sriv:~$]</div>
+  <div class="side-search">
+    <input id="site-search" type="search" placeholder="search posts…" autocomplete="off">
+    <div id="search-results"></div>
+  </div>
   <a href="{{ '/' | relative_url }}" {% if page.url == '/' %}class="active"{% endif %}>~/home</a>
   <a href="{{ '/#projects' | relative_url }}">projects</a>
   <a href="{{ '/blog/' | relative_url }}" {% if page.url contains '/blog' %}class="active"{% endif %}>blog</a>
   {% if site.medium and site.medium != "" %}<a href="{{ site.medium }}" target="_blank" rel="noopener">medium ↗</a>{% endif %}
   <a href="{{ '/post/' | relative_url }}" {% if page.url contains '/post' %}class="active"{% endif %}>✎ write</a>
   <a href="{{ '/about/' | relative_url }}" {% if page.url contains '/about' %}class="active"{% endif %}>about</a>
+  <a href="{{ '/saved/' | relative_url }}" {% if page.url contains '/saved' %}class="active"{% endif %}>⚑ saved</a>
+  <a href="{{ '/stats/' | relative_url }}" {% if page.url contains '/stats' %}class="active"{% endif %}>📊 my stats</a>
   <div class="side-foot">
     <a href="{{ site.author.github }}">github</a>
     <a href="{{ site.author.linkedin }}">linkedin</a>

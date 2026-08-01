@@ -501,6 +501,37 @@ article.post .footnotes {
 }
 .toc-tab:hover { filter: brightness(1.12); }
 
+/* ---------- Search + like/save ---------- */
+.side-search { padding: 4px 16px 10px; border-bottom: 1px solid var(--border); margin-bottom: 6px; }
+#site-search {
+  width: 100%; box-sizing: border-box;
+  background: var(--bg) url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="%239aa4af" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.5-4.5"/></svg>') no-repeat 11px center / 14px;
+  color: var(--text);
+  border: 1px solid var(--border); border-radius: 8px;
+  padding: 10px 12px 10px 34px; font-family: var(--mono); font-size: .84rem;
+}
+#site-search:focus { outline: none; border-color: var(--accent); }
+#search-results { display: flex; flex-direction: column; margin-top: 6px; max-height: 40vh; overflow-y: auto; }
+#search-results a {
+  padding: 8px 10px !important; border-radius: 8px; text-decoration: none;
+  display: block; color: var(--text-dim);
+}
+#search-results a:hover { background: var(--bg); color: var(--accent); }
+#search-results a strong { display: block; font-size: .84rem; color: var(--text); }
+#search-results a:hover strong { color: var(--accent); }
+#search-results a small { font-size: .7rem; line-height: 1.4; display: block; }
+.search-none { font-size: .75rem; color: var(--text-dim); padding: 8px 10px; }
+
+.post-actions { display: flex; gap: 10px; margin: 14px 0 4px; }
+.post-actions button {
+  font-family: var(--mono); font-size: .8rem; cursor: pointer;
+  background: none; border: 1px solid var(--paper-border); border-radius: 999px;
+  color: var(--paper-dim); padding: 6px 16px;
+}
+.post-actions button:hover { border-color: var(--paper-accent); color: var(--paper-accent); }
+.post-actions .act-like.on { color: #c92a2a; border-color: #c92a2a; }
+.post-actions .act-save.on { color: var(--paper-accent); border-color: var(--paper-accent); }
+
 /* ---------- Responsive ---------- */
 @media (max-width: 900px) {
   .post-wrap { grid-template-columns: 1fr; }

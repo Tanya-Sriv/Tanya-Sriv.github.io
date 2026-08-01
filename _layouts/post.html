@@ -10,6 +10,10 @@ layout: default
     {% if page.tags.size > 0 %} · {% for t in page.tags %}<a href="{{ '/blog/' | relative_url }}#{{ t }}">#{{ t }}</a> {% endfor %}{% endif %}
   </div>
   <h1>{{ page.title }}</h1>
+  <div class="post-actions" data-path="{{ page.url }}" data-title="{{ page.title | escape }}">
+    <button class="act-like" title="Like this post">♥ <span>like</span></button>
+    <button class="act-save" title="Save for later">⚑ <span>save</span></button>
+  </div>
   {{ content }}
 </article>
 {% include toc.html html=content %}

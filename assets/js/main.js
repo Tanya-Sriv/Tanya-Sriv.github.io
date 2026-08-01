@@ -211,6 +211,114 @@ if (tocDrawer) {
   if (window.innerWidth >= 1100) tocDrawer.classList.add("open");  // open by default on desktop
 }
 
+// ---- GoatCounter event helper (no-op until analytics is configured) ----
+function gcEvent(path) {
+  try {
+    if (window.goatcounter && goatcounter.count)
+      goatcounter.count({ path: path, event: true });
+  } catch (e) {}
+}
+function lsGet(k, d) { try { return JSON.parse(localStorage.getItem(k)) || d; } catch (e) { return d; } }
+function lsSet(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} }
+
+// ---- content search (index built by Jekyll at /search.json) ----
+// One engine, two boxes: sidebar + top-center of the screen.
+let searchIdx = null;
+async function ensureIndex() {
+  if (!searchIdx) {
+    try { searchIdx = await (await fetch("/search.json")).json(); }
+    catch (e) { searchIdx = window.SEARCH_INDEX || []; }
+  }
+  return searchIdx;
+}
+function bindSearch(input, resultsEl) {
+  if (!input || !resultsEl) return;
+  input.addEventListener("input", async () => {
+    const q = input.value.trim().toLowerCase();
+    if (q.length < 2) { resultsEl.innerHTML = ""; return; }
+    const terms = q.split(/\s+/);
+    const hits = (await ensureIndex()).filter(p => {
+      const hay = (p.title + " " + (p.tags || []).join(" ") + " " + p.content).toLowerCase();
+      return terms.every(t => hay.includes(t));
+    }).slice(0, 8);
+    resultsEl.innerHTML = hits.length
+      ? hits.map(p => {
+          const pos = p.content.toLowerCase().indexOf(terms[0]);
+          const snip = pos >= 0
+            ? "…" + p.content.slice(Math.max(0, pos - 30), pos + 70) + "…" : "";
+          return '<a href="' + p.url + '"' + (p.route ? ' data-route="' + p.route + '"' : "") +
+            '><strong>' + p.title + "</strong><small>" + p.date + " " + snip + "</small></a>";
+        }).join("")
+      : '<div class="search-none">no matches</div>';
+  });
+  document.addEventListener("click", e => {
+    if (!resultsEl.contains(e.target) && e.target !== input) resultsEl.innerHTML = "";
+  });
+}
+bindSearch(document.getElementById("site-search"), document.getElementById("search-results"));
+bindSearch(document.getElementById("nav-search-input"), document.getElementById("nav-search-results"));
+
+// ---- like / save buttons on posts ----
+const actions = document.querySelector(".post-actions");
+if (actions) {
+  const path = actions.dataset.path, title = actions.dataset.title;
+  const likeBtn = actions.querySelector(".act-like");
+  const saveBtn = actions.querySelector(".act-save");
+  const liked = () => lsGet("likedPosts", []).includes(path);
+  const savedList = () => lsGet("savedPosts", []);
+  const isSaved = () => savedList().some(p => p.path === path);
+  function render() {
+    likeBtn.classList.toggle("on", liked());
+    likeBtn.querySelector("span").textContent = liked() ? "liked" : "like";
+    saveBtn.classList.toggle("on", isSaved());
+    saveBtn.querySelector("span").textContent = isSaved() ? "saved" : "save";
+  }
+  likeBtn.addEventListener("click", () => {
+    let l = lsGet("likedPosts", []);
+    if (liked()) l = l.filter(p => p !== path);
+    else { l.push(path); gcEvent("like" + path); }   // owner sees totals in GoatCounter
+    lsSet("likedPosts", l); render();
+  });
+  saveBtn.addEventListener("click", () => {
+    let s = savedList();
+    if (isSaved()) s = s.filter(p => p.path !== path);
+    else s.push({ path: path, title: title });
+    lsSet("savedPosts", s); render();
+  });
+  render();
+
+  // ---- read counter: fires once when the reader reaches ~85% of the article ----
+  const art = document.querySelector("article.post");
+  if (art) {
+    let readSent = false;
+    try { readSent = sessionStorage.getItem("read" + path) === "1"; } catch (e) {}
+    window.addEventListener("scroll", function onScroll() {
+      if (readSent) return;
+      const r = art.getBoundingClientRect();
+      const done = (window.innerHeight - r.top) / r.height;
+      if (done >= 0.85) {
+        readSent = true;
+        try { sessionStorage.setItem("read" + path, "1"); } catch (e) {}
+        gcEvent("read" + path);
+        window.removeEventListener("scroll", onScroll);
+      }
+    });
+  }
+}
+
+// ---- saved-posts page ----
+const savedListEl = document.getElementById("saved-list");
+if (savedListEl) {
+  const saved = lsGet("savedPosts", []);
+  const empty = document.getElementById("saved-empty");
+  if (saved.length) {
+    empty.style.display = "none";
+    savedListEl.innerHTML = saved.map(p =>
+      '<li><h3><a href="' + p.path + '"' + (p.route ? ' data-route="' + p.route + '"' : "") +
+      '>' + p.title + "</a></h3></li>").join("");
+  }
+}
+
 // Copy buttons on code blocks
 document.querySelectorAll("article.post pre").forEach(pre => {
   const btn = document.createElement("button");
