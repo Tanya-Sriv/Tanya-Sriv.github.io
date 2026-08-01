@@ -20,6 +20,19 @@ if (themeBtn) {
   apply(pref());
 }
 
+// Mascot: click (or tap) to jump
+const mascot = document.getElementById("mascot");
+if (mascot) {
+  mascot.addEventListener("click", () => {
+    mascot.classList.remove("jump");
+    void mascot.offsetWidth;          // restart the animation
+    mascot.classList.add("jump");
+  });
+  mascot.addEventListener("animationend", e => {
+    if (e.animationName === "mascot-jump") mascot.classList.remove("jump");
+  });
+}
+
 // Copy buttons on code blocks
 document.querySelectorAll("article.post pre").forEach(pre => {
   const btn = document.createElement("button");
