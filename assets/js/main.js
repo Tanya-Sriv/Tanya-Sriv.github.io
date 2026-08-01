@@ -25,6 +25,56 @@ const mascot = document.getElementById("mascot");
 if (mascot) {
   const phrases = ["ba-na-naaa! 🍌", "bello!", "bee-boop!", "hee-hee-ha!", "ba-naa-na?!", "mo-cha ba-na-na! ☕🍌"];
 
+  // Optional recorded clips: drop files into /assets/audio/ with these names
+  // and they're used automatically (recordings you own — your own voice, a
+  // kid you know, or generated audio you have rights to). Missing files fall
+  // back to text-to-speech seamlessly.
+  const clipFiles = {
+    "ba-na-naaa! 🍌": "banana.mp3",
+    "bello!":         "bello.mp3",
+    "bee-boop!":      "beeboop.mp3",
+    "hee-hee-ha!":    "laugh.mp3",
+    "ba-naa-na?!":    "banana-question.mp3",
+    "mo-cha ba-na-na! ☕🍌": "mocha-banana.mp3",
+  };
+  const clips = {};   // phrase -> Audio
+  Object.entries(clipFiles).forEach(([phrase, file]) => {
+    const a = new Audio("/assets/audio/" + file);
+    a.preload = "auto";
+    clips[phrase] = a;                                  // recording wins by default
+    a.addEventListener("error", () => { delete clips[phrase]; }, { once: true });
+    // only a genuinely missing/broken file falls back to TTS
+  });
+  const bubble = document.createElement("div");
+  bubble.className = "mascot-bubble";
+  document.body.appendChild(bubble);
+  let bubbleTimer, audioCtx;
+
+  // Original goofy giggle: a run of wobbly triangle-wave chirps ending high.
+  function giggle() {
+    try {
+      audioCtx = audioCtx || new (window.AudioContext || window.webkitAudioContext)();
+      const t0 = audioCtx.currentTime;
+      const n = 5 + Math.floor(Math.random() * 3);
+      for (let i = 0; i < n; i++) {
+        const o = audioCtx.createOscillator(), g = audioCtx.createGain();
+        o.type = "triangle";
+        const start = t0 + i * 0.09;
+        const last = i === n - 1;
+        const f = (520 + Math.random() * 240 + (i % 2 ? 130 : 0)) * (last ? 1.5 : 1);
+        o.frequency.setValueAtTime(f * 1.18, start);
+        o.frequency.exponentialRampToValueAtTime(f * 0.82, start + (last ? 0.22 : 0.08));
+        g.gain.setValueAtTime(0.0001, start);
+        g.gain.exponentialRampToValueAtTime(0.16, start + 0.015);
+        g.gain.exponentialRampToValueAtTime(0.0001, start + (last ? 0.24 : 0.085));
+        o.connect(g).connect(audioCtx.destination);
+        o.start(start); o.stop(start + (last ? 0.25 : 0.09));
+      }
+    } catch (e) { /* audio blocked — stay silent, still jump */ }
+  }
+
+  // Speak the phrase out loud (Web Speech API), pitched up into squeaky-helper
+  // register. Falls back to the synth giggle if speech isn't available.
   // Pick the most kid-like voice the visitor's system has: a real child voice
   // if one exists, else a light/high voice we can pitch up into cartoon-kid.
   let kidVoice = null;
@@ -47,6 +97,11 @@ if (mascot) {
   }
 
   function speak(text) {
+    if (clips[text]) {                                 // recorded clip ALWAYS wins
+      try { clips[text].currentTime = 0; } catch (e) {}
+      clips[text].play().catch(() => {});
+      return;
+    }
     if (!("speechSynthesis" in window)) { giggle(); return; }
     try {
       const u = new SpeechSynthesisUtterance(
