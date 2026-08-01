@@ -96,10 +96,43 @@ if (mascot) {
     speechSynthesis.addEventListener("voiceschanged", pickVoice);  // …loads async
   }
 
+  // ----- focus mode (mutes all mascot audio; persists across visits) -----
+  const focusBtn = document.querySelector(".focus-btn");
+  let focused = false;
+  try { focused = localStorage.getItem("focus") === "1"; } catch (e) {}
+  function renderFocus() {
+    if (!focusBtn) return;
+    focusBtn.classList.toggle("on", focused);
+    focusBtn.setAttribute("aria-pressed", String(focused));
+    focusBtn.textContent = focused ? "⌁ focus ✓" : "⌁ focus";
+  }
+  if (focusBtn) {
+    renderFocus();
+    focusBtn.addEventListener("click", () => {
+      focused = !focused;
+      try { localStorage.setItem("focus", focused ? "1" : "0"); } catch (e) {}
+      renderFocus();
+      stopAudio();                     // entering focus silences him immediately
+    });
+  }
+
+  // ----- interrupt: a new click always stops whatever is playing -----
+  let currentAudio = null;
+  function stopAudio() {
+    try { if ("speechSynthesis" in window) speechSynthesis.cancel(); } catch (e) {}
+    if (currentAudio) {
+      currentAudio.pause();
+      try { currentAudio.currentTime = 0; } catch (e) {}
+      currentAudio = null;
+    }
+  }
+
   function speak(text) {
+    if (focused) return;                               // focus mode: silent pet
     if (clips[text]) {                                 // recorded clip ALWAYS wins
-      try { clips[text].currentTime = 0; } catch (e) {}
-      clips[text].play().catch(() => {});
+      currentAudio = clips[text];
+      try { currentAudio.currentTime = 0; } catch (e) {}
+      currentAudio.play().catch(() => {});             // never TTS over a recording
       return;
     }
     if (!("speechSynthesis" in window)) { giggle(); return; }
@@ -115,6 +148,7 @@ if (mascot) {
   }
 
   mascot.addEventListener("click", () => {
+    stopAudio();                       // last click wins — cut off mid-banana
     mascot.classList.remove("jump");
     void mascot.offsetWidth;          // restart the animation
     mascot.classList.add("jump");
