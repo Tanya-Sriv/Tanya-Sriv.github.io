@@ -298,6 +298,42 @@ article.post .footnotes {
   .mascot, .mascot-inner, .mascot .antenna-light { animation: none; }
 }
 
+/* ---------- /post editor ---------- */
+.editor-page { max-width: 1280px; margin: 24px auto 60px; padding: 0 24px; }
+.editor-head { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 12px; }
+.ed-field {
+  flex: 1 1 220px; background: var(--bg-raised); color: var(--text);
+  border: 1px solid var(--border); border-radius: 8px; padding: 9px 13px;
+  font-family: var(--sans); font-size: .95rem;
+}
+.ed-field:focus { outline: none; border-color: var(--accent); }
+.ed-actions { display: flex; gap: 8px; }
+.ed-btn {
+  font-family: var(--mono); font-size: .8rem; cursor: pointer;
+  background: var(--bg-raised); color: var(--text);
+  border: 1px solid var(--border); border-radius: 8px; padding: 8px 14px;
+}
+.ed-btn:hover { border-color: var(--accent); color: var(--accent); }
+.ed-primary { background: var(--accent); color: #08260d; border-color: var(--accent); font-weight: 700; }
+.ed-primary:hover { color: #08260d; filter: brightness(1.1); }
+.ed-toolbar { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 12px; }
+.ed-toolbar button {
+  font-family: var(--mono); font-size: .78rem; cursor: pointer;
+  background: none; color: var(--text-dim);
+  border: 1px solid var(--border); border-radius: 6px; padding: 5px 10px;
+}
+.ed-toolbar button:hover { color: var(--accent); border-color: var(--accent); }
+.ed-split { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; min-height: 480px; }
+#ed-src {
+  background: var(--bg-raised); color: var(--text);
+  border: 1px solid var(--border); border-radius: 10px; padding: 16px;
+  font-family: var(--mono); font-size: .88rem; line-height: 1.6;
+  resize: vertical; min-height: 480px;
+}
+#ed-src:focus { outline: none; border-color: var(--accent); }
+.ed-preview-wrap { border-radius: 10px; padding: 24px 28px; overflow-y: auto; max-height: 75vh; }
+.ed-preview-wrap article.post { font-size: 1rem; }
+.ed-hint { color: var(--text-dim); font-size: .82rem; font-family: var(--mono); margin-top: 12px; }
 /* ---------- Responsive ---------- */
 @media (max-width: 900px) {
   .post-wrap { grid-template-columns: 1fr; }

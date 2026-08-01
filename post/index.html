@@ -1,0 +1,50 @@
+---
+layout: default
+title: Write a post
+permalink: /post/
+---
+<div class="editor-page">
+  <div class="editor-head">
+    <input id="ed-title" class="ed-field" placeholder="Post title…">
+    <input id="ed-tags" class="ed-field" placeholder="tags, comma, separated">
+    <div class="ed-actions">
+      <button id="ed-copy" class="ed-btn">copy .md</button>
+      <button id="ed-download" class="ed-btn">download .md</button>
+      <button id="ed-github" class="ed-btn ed-primary">publish on GitHub →</button>
+    </div>
+  </div>
+
+  <!-- ===== MARKDOWN MODE ===== -->
+  <div id="ed-md-wrap">
+    <div class="ed-toolbar">
+      <button data-ins='["## ", null]' title="Heading 2">H2</button>
+      <button data-ins='["### ", null]' title="Heading 3">H3</button>
+      <button data-ins='["#### ", null]' title="Heading 4">H4</button>
+      <button data-ins='["**", "**"]' title="Bold"><b>B</b></button>
+      <button data-ins='["*", "*"]' title="Italic"><i>I</i></button>
+      <button data-ins='["~~", "~~"]' title="Strikethrough"><del>S</del></button>
+      <button data-ins='["[", "](https://url)"]' title="Link">link</button>
+      <button data-ins='["![alt text](https://image-url)\n", null]' title="Image">img</button>
+      <button data-ins='["\n| Column | Column | Column |\n|---|---|---|\n| cell | cell | cell |\n| cell | cell | cell |\n", null]' title="Table">table</button>
+      <button data-ins='["\n```python\n", "\n```\n"]' title="Code block">code</button>
+      <button data-ins='["\n- item\n  - nested item\n- item\n", null]' title="Nested list">list</button>
+      <button data-ins='["\n> ", null]' title="Quote">quote</button>
+      <button data-ins='["[^1]", null]' title="Footnote reference">fn</button>
+      <button data-ins='["\n[^1]: Footnote text here.\n", null]' title="Footnote definition">fn:def</button>
+    </div>
+    <div class="ed-split">
+      <textarea id="ed-src" spellcheck="false" placeholder="Write markdown…">## Markdown mode
+
+Prefer raw markdown? It lives here, with live preview.</textarea>
+      <div class="post-surface ed-preview-wrap">
+        <article class="post" id="ed-preview"></article>
+      </div>
+    </div>
+  </div>
+
+  <p class="ed-hint">Publishing: <em>publish on GitHub</em> opens a pre-filled new-file page in
+  your repo — review and press <em>Commit</em>; the site rebuilds in ~a minute. Long post?
+  Use <em>download .md</em> and drop the file into <code>_posts/</code>.</p>
+</div>
+
+<script src="{{ '/assets/js/editor.js' | relative_url }}"></script>
