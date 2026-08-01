@@ -8,6 +8,7 @@ permalink: /post/
     <input id="ed-title" class="ed-field" placeholder="Post title…">
     <input id="ed-tags" class="ed-field" placeholder="tags, comma, separated">
     <div class="ed-actions">
+      <button id="ed-import" class="ed-btn">⤓ import from Medium</button>
       <button id="ed-copy" class="ed-btn">copy .md</button>
       <button id="ed-download" class="ed-btn">download .md</button>
       <button id="ed-github" class="ed-btn ed-primary">publish on GitHub →</button>
@@ -22,15 +23,60 @@ permalink: /post/
 
   <!-- ===== VISUAL (Medium-style) MODE ===== -->
   <div id="ed-visual-wrap">
-        <div class="ed-toolbar">
-      <button data-vins='<table><thead><tr><th>Column</th><th>Column</th><th>Column</th></tr></thead><tbody><tr><td>cell</td><td>cell</td><td>cell</td></tr><tr><td>cell</td><td>cell</td><td>cell</td></tr></tbody></table><p><br></p>' title="Table — type straight into the cells">table</button>
-      <button data-vins='<pre><code>your code here</code></pre><p><br></p>' title="Code block">code</button>
-      <button data-vins='<ul><li>item<ul><li>nested item</li></ul></li><li>item</li></ul><p><br></p>' title="Nested list">list</button>
-      <button data-vins='<img src="https://image-url" alt="image">' title="Image">img</button>
-      <button data-vins='<video controls width="100%" src="/assets/video/clip.mp4"></video><p><br></p>' title="Self-hosted video">video</button>
-      <button data-vins='<iframe width="100%" height="400" src="https://www.youtube.com/embed/VIDEO_ID" frameborder="0" allowfullscreen></iframe><p><br></p>' title="YouTube embed">yt</button>
-      <button data-vins='<sup><a href="#fn-1" id="fnref-1">1</a></sup>' title="Footnote marker">fn</button>
-      <button data-vins='<hr>' title="Divider">─</button>
+    <div class="ed-ribbon">
+      <div class="rb-group">
+        <button data-x="undo" title="Undo">↶</button>
+        <button data-x="redo" title="Redo">↷</button>
+      </div>
+      <div class="rb-group">
+        <select id="rb-block" title="Paragraph style">
+          <option value="P">Paragraph</option>
+          <option value="H2">Heading 2</option>
+          <option value="H3">Heading 3</option>
+          <option value="H4">Heading 4</option>
+          <option value="BLOCKQUOTE">Quote</option>
+          <option value="PRE">Code block</option>
+        </select>
+      </div>
+      <div class="rb-group">
+        <button data-x="bold" title="Bold"><b>B</b></button>
+        <button data-x="italic" title="Italic"><i>I</i></button>
+        <button data-x="underline" title="Underline"><u>U</u></button>
+        <button data-x="strikeThrough" title="Strikethrough"><del>S</del></button>
+        <button id="rb-inlinecode" title="Inline code">‹/›</button>
+      </div>
+      <div class="rb-group" title="Text color">
+        <button class="rb-swatch" data-fore="#1c1e21" style="--sw:#1c1e21">A</button>
+        <button class="rb-swatch" data-fore="#0b7285" style="--sw:#0b7285">A</button>
+        <button class="rb-swatch" data-fore="#7a2f3e" style="--sw:#7a2f3e">A</button>
+        <button class="rb-swatch" data-fore="#1a7f37" style="--sw:#1a7f37">A</button>
+        <button class="rb-swatch rb-hl" data-hilite="#fff3bf" style="--sw:#fff3bf" title="Highlight">▆</button>
+        <button class="rb-swatch rb-hl" data-hilite="#d3f9d8" style="--sw:#d3f9d8" title="Highlight">▆</button>
+      </div>
+      <div class="rb-group">
+        <button data-x="justifyLeft" title="Align left">⯇</button>
+        <button data-x="justifyCenter" title="Center">≡</button>
+        <button data-x="justifyRight" title="Align right">⯈</button>
+      </div>
+      <div class="rb-group">
+        <button data-x="insertUnorderedList" title="Bullet list">•–</button>
+        <button data-x="insertOrderedList" title="Numbered list">1.</button>
+        <button data-x="outdent" title="Outdent">⇤</button>
+        <button data-x="indent" title="Indent (nested lists!)">⇥</button>
+      </div>
+      <div class="rb-group">
+        <button id="rb-link" title="Link">🔗</button>
+        <button data-vins='<img src="https://image-url" alt="image">' title="Image">img</button>
+        <button data-vins='<table><thead><tr><th>Column</th><th>Column</th><th>Column</th></tr></thead><tbody><tr><td>cell</td><td>cell</td><td>cell</td></tr><tr><td>cell</td><td>cell</td><td>cell</td></tr></tbody></table><p><br></p>' title="Table — type into the cells">table</button>
+        <button data-vins='<video controls width="100%" src="/assets/video/clip.mp4"></video><p><br></p>' title="Self-hosted video">video</button>
+        <button data-vins='<iframe width="100%" height="400" src="https://www.youtube.com/embed/VIDEO_ID" frameborder="0" allowfullscreen></iframe><p><br></p>' title="YouTube embed">yt</button>
+        <button data-vins='<sup><a href="#fn-1" id="fnref-1">1</a></sup>' title="Footnote marker">fn</button>
+        <button data-vins='<hr>' title="Divider">─</button>
+        <button id="rb-draw" title="Draw a sketch and insert it">✏ draw</button>
+      </div>
+      <div class="rb-group">
+        <button data-x="removeFormat" title="Clear formatting">⌫fmt</button>
+      </div>
     </div>
     <div class="post-surface ed-visual-surface">
       <article class="post ed-visual" id="ed-visual" contenteditable="true">
@@ -102,6 +148,33 @@ Prefer raw markdown? It lives here, with live preview.</textarea>
     <div class="ed-modal-actions">
       <button id="imp-cancel" class="ed-btn">cancel</button>
       <button id="imp-go" class="ed-btn ed-primary">import →</button>
+    </div>
+  </div>
+</div>
+
+<!-- drawing modal -->
+<div id="draw-modal" class="ed-modal" hidden>
+  <div class="ed-modal-box">
+    <h3>✏ Draw</h3>
+    <div class="draw-tools">
+      <button class="rb-swatch dr-color on" data-dcolor="#1c1e21" style="--sw:#1c1e21">●</button>
+      <button class="rb-swatch dr-color" data-dcolor="#0b7285" style="--sw:#0b7285">●</button>
+      <button class="rb-swatch dr-color" data-dcolor="#7a2f3e" style="--sw:#7a2f3e">●</button>
+      <button class="rb-swatch dr-color" data-dcolor="#1a7f37" style="--sw:#1a7f37">●</button>
+      <button class="rb-swatch dr-color" data-dcolor="#f5c518" style="--sw:#f5c518">●</button>
+      <span class="ed-bubble-sep"></span>
+      <button class="dr-size on" data-dsize="3">thin</button>
+      <button class="dr-size" data-dsize="7">med</button>
+      <button class="dr-size" data-dsize="14">thick</button>
+      <span class="ed-bubble-sep"></span>
+      <button id="dr-eraser">eraser</button>
+      <button id="dr-undo">↶ undo</button>
+      <button id="dr-clear">clear</button>
+    </div>
+    <canvas id="dr-canvas" width="760" height="420"></canvas>
+    <div class="ed-modal-actions">
+      <button id="dr-cancel" class="ed-btn">cancel</button>
+      <button id="dr-insert" class="ed-btn ed-primary">insert drawing →</button>
     </div>
   </div>
 </div>

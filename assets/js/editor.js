@@ -176,6 +176,153 @@ function mdRender(src) {
       document.execCommand("insertHTML", false, btn.dataset.vins);
     }));
 
+  // ----- ribbon (Word-style) -----
+  document.querySelectorAll(".ed-ribbon [data-x]").forEach(btn =>
+    btn.addEventListener("mousedown", e => {
+      e.preventDefault();                              // keep selection
+      document.execCommand(btn.dataset.x, false, null);
+    }));
+  const blockSel = document.getElementById("rb-block");
+  if (blockSel) blockSel.addEventListener("change", () => {
+    visual.focus();
+    document.execCommand("formatBlock", false, blockSel.value);
+    blockSel.blur();
+  });
+  document.querySelectorAll(".ed-ribbon [data-fore]").forEach(btn =>
+    btn.addEventListener("mousedown", e => {
+      e.preventDefault();
+      document.execCommand("foreColor", false, btn.dataset.fore);
+    }));
+  document.querySelectorAll(".ed-ribbon [data-hilite]").forEach(btn =>
+    btn.addEventListener("mousedown", e => {
+      e.preventDefault();
+      document.execCommand("hiliteColor", false, btn.dataset.hilite);
+    }));
+  const rbLink = document.getElementById("rb-link");
+  if (rbLink) rbLink.addEventListener("mousedown", e => {
+    e.preventDefault();
+    const url = prompt("Link URL:", "https://");
+    if (url) document.execCommand("createLink", false, url);
+  });
+  const rbCode = document.getElementById("rb-inlinecode");
+  if (rbCode) rbCode.addEventListener("mousedown", e => {
+    e.preventDefault();
+    const sel = window.getSelection();
+    if (sel && !sel.isCollapsed) {
+      try {
+        const r = sel.getRangeAt(0), c = document.createElement("code");
+        r.surroundContents(c);
+      } catch (err) { /* selection crosses elements — skip */ }
+    }
+  });
+
+  // ----- import from Medium (paste-based; browsers block cross-site fetch) -----
+  const impModal = document.getElementById("imp-modal");
+  const impPaste = document.getElementById("imp-paste");
+  function cleanMediumHTML(html) {
+    const tmp = document.createElement("div");
+    tmp.innerHTML = html;
+    tmp.querySelectorAll("script,style,button,svg,nav,header,footer,form,input").forEach(n => n.remove());
+    // unwrap layout containers Medium wraps everything in
+    let changed = true;
+    while (changed) {
+      changed = false;
+      tmp.querySelectorAll("div,section,article,span,figure,main").forEach(n => {
+        n.replaceWith(...n.childNodes); changed = true;
+      });
+    }
+    // headings: Medium's h1 = title, h3/h4 = sections
+    tmp.querySelectorAll("h1").forEach(n => {
+      const h = document.createElement("h2"); h.innerHTML = n.innerHTML; n.replaceWith(h);
+    });
+    // strip all attributes except the ones that matter
+    tmp.querySelectorAll("*").forEach(n => {
+      [...n.attributes].forEach(a => {
+        if (!["href", "src", "alt", "controls", "width", "height", "allowfullscreen", "frameborder"].includes(a.name))
+          n.removeAttribute(a.name);
+      });
+    });
+    // drop empty paragraphs
+    tmp.querySelectorAll("p").forEach(n => { if (!n.textContent.trim() && !n.querySelector("img")) n.remove(); });
+    return tmp;
+  }
+  const impBtn = document.getElementById("ed-import");
+  if (impBtn) impBtn.addEventListener("click", () => { impModal.hidden = false; impPaste.focus(); });
+  document.getElementById("imp-cancel").addEventListener("click", () => {
+    impModal.hidden = true; impPaste.innerHTML = "";
+  });
+  document.getElementById("imp-go").addEventListener("click", () => {
+    const cleaned = cleanMediumHTML(impPaste.innerHTML);
+    const firstH = cleaned.querySelector("h2,h3");
+    if (firstH && !titleEl.value) { titleEl.value = firstH.textContent.trim(); firstH.remove(); }
+    visual.innerHTML = cleaned.innerHTML.trim() || visual.innerHTML;
+    impModal.hidden = true; impPaste.innerHTML = "";
+    setMode("visual");
+  });
+
+  // ----- drawing tool -----
+  const drawModal = document.getElementById("draw-modal");
+  const canvas = document.getElementById("dr-canvas");
+  if (canvas) {
+    const ctx = canvas.getContext("2d");
+    let dColor = "#1c1e21", dSize = 3, erasing = false, drawing = false, undoStack = [];
+    function resetCanvas() {
+      ctx.fillStyle = "#ffffff"; ctx.fillRect(0, 0, canvas.width, canvas.height);
+    }
+    resetCanvas();
+    function pos(e) {
+      const r = canvas.getBoundingClientRect();
+      return [(e.clientX - r.left) * canvas.width / r.width,
+              (e.clientY - r.top) * canvas.height / r.height];
+    }
+    canvas.addEventListener("pointerdown", e => {
+      undoStack.push(canvas.toDataURL());
+      if (undoStack.length > 25) undoStack.shift();
+      drawing = true;
+      ctx.beginPath(); ctx.moveTo(...pos(e));
+      canvas.setPointerCapture(e.pointerId);
+    });
+    canvas.addEventListener("pointermove", e => {
+      if (!drawing) return;
+      ctx.lineTo(...pos(e));
+      ctx.strokeStyle = erasing ? "#ffffff" : dColor;
+      ctx.lineWidth = erasing ? dSize * 3 : dSize;
+      ctx.lineCap = "round"; ctx.lineJoin = "round";
+      ctx.stroke();
+    });
+    canvas.addEventListener("pointerup", () => { drawing = false; });
+    document.querySelectorAll(".dr-color").forEach(b => b.addEventListener("click", () => {
+      dColor = b.dataset.dcolor; erasing = false;
+      document.querySelectorAll(".dr-color").forEach(x => x.classList.toggle("on", x === b));
+      document.getElementById("dr-eraser").classList.remove("on");
+    }));
+    document.querySelectorAll(".dr-size").forEach(b => b.addEventListener("click", () => {
+      dSize = +b.dataset.dsize;
+      document.querySelectorAll(".dr-size").forEach(x => x.classList.toggle("on", x === b));
+    }));
+    document.getElementById("dr-eraser").addEventListener("click", function () {
+      erasing = !erasing; this.classList.toggle("on", erasing);
+    });
+    document.getElementById("dr-undo").addEventListener("click", () => {
+      if (!undoStack.length) return;
+      const img = new Image();
+      img.onload = () => { ctx.drawImage(img, 0, 0); };
+      img.src = undoStack.pop();
+    });
+    document.getElementById("dr-clear").addEventListener("click", () => {
+      undoStack.push(canvas.toDataURL()); resetCanvas();
+    });
+    document.getElementById("rb-draw").addEventListener("click", () => { drawModal.hidden = false; });
+    document.getElementById("dr-cancel").addEventListener("click", () => { drawModal.hidden = true; });
+    document.getElementById("dr-insert").addEventListener("click", () => {
+      const url = canvas.toDataURL("image/png");
+      drawModal.hidden = true;
+      visual.focus();
+      document.execCommand("insertHTML", false,
+        '<img src="' + url + '" alt="drawing" style="max-width:100%">');
+    });
+  }
+
   function insert(snippet, wrapEnd) {
     const s = ta.selectionStart, e = ta.selectionEnd, v = ta.value;
     const sel = v.slice(s, e);
