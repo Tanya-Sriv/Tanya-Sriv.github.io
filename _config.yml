@@ -11,6 +11,9 @@ author:
   linkedin: https://www.linkedin.com/in/tanya-sriv/
   email: tanya.1108srivastava@gmail.com
 
+# Your Medium profile. When set, a "medium" link appears in the nav.
+medium: ""
+
 # Analytics (GoatCounter). Set to your dashboard code; empty disables tracking.
 goatcounter: tanya-sriv
 

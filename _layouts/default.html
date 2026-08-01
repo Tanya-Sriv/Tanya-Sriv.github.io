@@ -23,6 +23,7 @@
     <li><a href="{{ '/' | relative_url }}" {% if page.url == '/' %}class="active"{% endif %}>~/home</a></li>
     <li><a href="{{ '/#projects' | relative_url }}">projects</a></li>
     <li><a href="{{ '/blog/' | relative_url }}" {% if page.url contains '/blog' %}class="active"{% endif %}>blog</a></li>
+    {% if site.medium and site.medium != "" %}<li><a href="{{ site.medium }}" target="_blank" rel="noopener">medium ↗</a></li>{% endif %}
     <li><a href="{{ '/about/' | relative_url }}" {% if page.url contains '/about' %}class="active"{% endif %}>about</a></li>
     <li><button class="theme-btn" aria-label="Toggle color theme">◐ auto</button></li>
     <li><button class="focus-btn" aria-label="Focus mode: mute mascot audio" aria-pressed="false">⌁ focus</button></li>
