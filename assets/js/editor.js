@@ -260,6 +260,115 @@ function mdRender(src) {
     setMode("visual");
   });
 
+  // ----- image insertion: URL / local file / snip+paste / drag-drop -----
+  const imgModal = document.getElementById("img-modal");
+  let savedRange = null;
+  function saveCaret() {
+    const sel = window.getSelection();
+    if (sel && sel.rangeCount && visual.contains(sel.anchorNode))
+      savedRange = sel.getRangeAt(0).cloneRange();
+  }
+  function insertImage(src) {
+    visual.focus();
+    if (savedRange) {
+      const sel = window.getSelection();
+      sel.removeAllRanges(); sel.addRange(savedRange);
+    }
+    document.execCommand("insertHTML", false,
+      '<img src="' + src + '" alt="image" style="max-width:100%">');
+    if (imgModal) imgModal.hidden = true;
+  }
+  function fileToImage(file) {
+    if (!file || !file.type.startsWith("image/")) return;
+    const r = new FileReader();
+    r.onload = () => insertImage(r.result);
+    r.readAsDataURL(file);
+  }
+  const rbImg = document.getElementById("rb-img");
+  if (rbImg) {
+    rbImg.addEventListener("click", () => { saveCaret(); imgModal.hidden = false; });
+    document.getElementById("img-cancel").addEventListener("click", () => imgModal.hidden = true);
+    document.getElementById("img-url-go").addEventListener("click", () => {
+      const u = document.getElementById("img-url").value.trim();
+      if (u) insertImage(u);
+    });
+    const drop = document.getElementById("img-drop");
+    const fileInput = document.getElementById("img-file");
+    drop.addEventListener("click", () => fileInput.click());
+    fileInput.addEventListener("change", () => fileToImage(fileInput.files[0]));
+    drop.addEventListener("dragover", e => { e.preventDefault(); drop.classList.add("over"); });
+    drop.addEventListener("dragleave", () => drop.classList.remove("over"));
+    drop.addEventListener("drop", e => {
+      e.preventDefault(); drop.classList.remove("over");
+      fileToImage(e.dataTransfer.files[0]);
+    });
+    const pasteZone = document.getElementById("img-paste");
+    pasteZone.addEventListener("paste", e => {
+      for (const item of e.clipboardData.items)
+        if (item.type.startsWith("image/")) { e.preventDefault(); fileToImage(item.getAsFile()); return; }
+    });
+  }
+  // paste a screenshot straight into the text — no dialog needed
+  visual.addEventListener("paste", e => {
+    for (const item of e.clipboardData.items)
+      if (item.type.startsWith("image/")) {
+        e.preventDefault(); saveCaret(); fileToImage(item.getAsFile()); return;
+      }
+  });
+  // drag an image file straight onto the page
+  visual.addEventListener("dragover", e => {
+    if ([...e.dataTransfer.types].includes("Files")) e.preventDefault();
+  });
+  visual.addEventListener("drop", e => {
+    if (!e.dataTransfer.files.length) return;         // native image move: let it be
+    e.preventDefault();
+    const range = document.caretRangeFromPoint
+      ? document.caretRangeFromPoint(e.clientX, e.clientY) : null;
+    if (range) savedRange = range;
+    fileToImage(e.dataTransfer.files[0]);
+  });
+
+  // ----- click an image → resize frame with corner handles; drag img to move -----
+  const rz = document.getElementById("img-resizer");
+  let rzImg = null;
+  function placeResizer() {
+    if (!rzImg || !document.contains(rzImg)) { hideResizer(); return; }
+    const r = rzImg.getBoundingClientRect();
+    rz.style.left = (r.left + window.scrollX - 2) + "px";
+    rz.style.top = (r.top + window.scrollY - 2) + "px";
+    rz.style.width = r.width + "px";
+    rz.style.height = r.height + "px";
+  }
+  function showResizer(img) { rzImg = img; rz.hidden = false; placeResizer(); }
+  function hideResizer() { rzImg = null; rz.hidden = true; }
+  visual.addEventListener("click", e => {
+    if (e.target.tagName === "IMG") { showResizer(e.target); e.preventDefault(); }
+    else hideResizer();
+  });
+  document.addEventListener("scroll", placeResizer, true);
+  window.addEventListener("resize", placeResizer);
+  visual.addEventListener("input", () => setTimeout(placeResizer, 1));
+  if (rz) rz.querySelectorAll(".rz").forEach(h =>
+    h.addEventListener("pointerdown", e => {
+      if (!rzImg) return;
+      e.preventDefault();
+      const startX = e.clientX, startW = rzImg.getBoundingClientRect().width;
+      const fromLeft = h.dataset.c === "nw" || h.dataset.c === "sw";
+      function move(ev) {
+        const dx = ev.clientX - startX;
+        const w = Math.max(48, fromLeft ? startW - dx : startW + dx);
+        rzImg.style.width = w + "px";
+        rzImg.style.height = "auto";
+        placeResizer();
+      }
+      function up() {
+        document.removeEventListener("pointermove", move);
+        document.removeEventListener("pointerup", up);
+      }
+      document.addEventListener("pointermove", move);
+      document.addEventListener("pointerup", up);
+    }));
+
   // ----- drawing tool -----
   const drawModal = document.getElementById("draw-modal");
   const canvas = document.getElementById("dr-canvas");

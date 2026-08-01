@@ -66,7 +66,7 @@ permalink: /post/
       </div>
       <div class="rb-group">
         <button id="rb-link" title="Link">🔗</button>
-        <button data-vins='<img src="https://image-url" alt="image">' title="Image">img</button>
+        <button id="rb-img" title="Insert image — URL, file, snip or paste">img</button>
         <button data-vins='<table><thead><tr><th>Column</th><th>Column</th><th>Column</th></tr></thead><tbody><tr><td>cell</td><td>cell</td><td>cell</td></tr><tr><td>cell</td><td>cell</td><td>cell</td></tr></tbody></table><p><br></p>' title="Table — type into the cells">table</button>
         <button data-vins='<video controls width="100%" src="/assets/video/clip.mp4"></video><p><br></p>' title="Self-hosted video">video</button>
         <button data-vins='<iframe width="100%" height="400" src="https://www.youtube.com/embed/VIDEO_ID" frameborder="0" allowfullscreen></iframe><p><br></p>' title="YouTube embed">yt</button>
@@ -150,6 +150,34 @@ Prefer raw markdown? It lives here, with live preview.</textarea>
       <button id="imp-go" class="ed-btn ed-primary">import →</button>
     </div>
   </div>
+</div>
+
+<!-- insert-image modal -->
+<div id="img-modal" class="ed-modal" hidden>
+  <div class="ed-modal-box">
+    <h3>Insert image</h3>
+    <div class="img-row">
+      <input id="img-url" class="ed-field" placeholder="https://image-url…">
+      <button id="img-url-go" class="ed-btn">insert from URL</button>
+    </div>
+    <div id="img-drop" class="img-drop">
+      <strong>Drop an image file here</strong> or click to browse your computer
+      <input id="img-file" type="file" accept="image/*" hidden>
+    </div>
+    <div id="img-paste" class="img-drop img-paste" tabindex="0">
+      <strong>Snip &amp; paste:</strong> take a screenshot
+      (Win&#8239;Shift&#8239;S / Cmd&#8239;Shift&#8239;4), click here, then Ctrl/Cmd&#8239;V
+    </div>
+    <div class="ed-modal-actions">
+      <button id="img-cancel" class="ed-btn">cancel</button>
+    </div>
+  </div>
+</div>
+
+<!-- image resize overlay -->
+<div id="img-resizer" hidden>
+  <span class="rz" data-c="nw"></span><span class="rz" data-c="ne"></span>
+  <span class="rz" data-c="sw"></span><span class="rz" data-c="se"></span>
 </div>
 
 <!-- drawing modal -->
