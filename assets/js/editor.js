@@ -376,7 +376,7 @@ function mdRender(src) {
     const ctx = canvas.getContext("2d");
     let dColor = "#1c1e21", dSize = 3, erasing = false, drawing = false, undoStack = [];
     function resetCanvas() {
-      ctx.fillStyle = "#ffffff"; ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.clearRect(0, 0, canvas.width, canvas.height);   // transparent, not white
     }
     resetCanvas();
     function pos(e) {
@@ -394,7 +394,8 @@ function mdRender(src) {
     canvas.addEventListener("pointermove", e => {
       if (!drawing) return;
       ctx.lineTo(...pos(e));
-      ctx.strokeStyle = erasing ? "#ffffff" : dColor;
+      ctx.globalCompositeOperation = erasing ? "destination-out" : "source-over";
+      ctx.strokeStyle = erasing ? "rgba(0,0,0,1)" : dColor;
       ctx.lineWidth = erasing ? dSize * 3 : dSize;
       ctx.lineCap = "round"; ctx.lineJoin = "round";
       ctx.stroke();
@@ -415,7 +416,11 @@ function mdRender(src) {
     document.getElementById("dr-undo").addEventListener("click", () => {
       if (!undoStack.length) return;
       const img = new Image();
-      img.onload = () => { ctx.drawImage(img, 0, 0); };
+      img.onload = () => {
+        ctx.globalCompositeOperation = "source-over";
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.drawImage(img, 0, 0);
+      };
       img.src = undoStack.pop();
     });
     document.getElementById("dr-clear").addEventListener("click", () => {

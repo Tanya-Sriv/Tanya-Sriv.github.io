@@ -22,6 +22,10 @@
     <button class="nav-burger" id="nav-burger" aria-label="Open menu">☰</button>
     <a class="brand" href="{{ '/' | relative_url }}">tanya-sriv</a>
   </div>
+  <div class="nav-search">
+    <input id="nav-search-input" type="search" placeholder="search…" autocomplete="off">
+    <div id="nav-search-results" class="nav-search-results"></div>
+  </div>
   <ul>
     <li><button class="theme-btn" aria-label="Toggle color theme">◐ auto</button></li>
     <li><button class="focus-btn" aria-label="Focus mode: mute mascot audio" aria-pressed="false">⌁ focus</button></li>
@@ -30,7 +34,9 @@
 
 <div class="nav-overlay" id="nav-overlay"></div>
 <aside class="side-nav" id="side-nav">
-  <div class="side-title">[tanya@sriv:~$]</div>
+  <div class="side-title">[tanya@sriv:~$]
+    <button id="side-pin" title="Pin sidebar open" aria-pressed="false">📌</button>
+  </div>
   <div class="side-search">
     <input id="site-search" type="search" placeholder="search posts…" autocomplete="off">
     <div id="search-results"></div>
@@ -44,8 +50,8 @@
   <a href="{{ '/saved/' | relative_url }}" {% if page.url contains '/saved' %}class="active"{% endif %}>⚑ saved</a>
   <a href="{{ '/stats/' | relative_url }}" {% if page.url contains '/stats' %}class="active"{% endif %}>📊 my stats</a>
   <div class="side-foot">
-    <a href="{{ site.author.github }}">github</a>
-    <a href="{{ site.author.linkedin }}">linkedin</a>
+    <a href="{{ site.author.github }}" title="GitHub">{% include icon.html name="github" %} github</a>
+    <a href="{{ site.author.linkedin }}" title="LinkedIn">{% include icon.html name="linkedin" %} linkedin</a>
   </div>
 </aside>
 
@@ -56,9 +62,9 @@
 <footer class="footer">
   <div class="inner">
     <div>
-      <a href="{{ site.author.github }}">github</a>
-      <a href="{{ site.author.linkedin }}">linkedin</a>
-      <a href="mailto:{{ site.author.email }}">email</a>
+      <a href="{{ site.author.github }}" title="GitHub">{% include icon.html name="github" %} github</a>
+      <a href="{{ site.author.linkedin }}" title="LinkedIn">{% include icon.html name="linkedin" %} linkedin</a>
+      <a href="mailto:{{ site.author.email }}" title="Email">{% include icon.html name="email" %} email</a>
     </div>
     <div>© {{ site.time | date: "%Y" }} {{ site.author.name }}</div>
   </div>

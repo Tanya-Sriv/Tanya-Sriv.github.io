@@ -204,6 +204,29 @@ if (burger && sideNav) {
   });
   document.addEventListener("keydown", e => { if (e.key === "Escape") setNav(false); });
 }
+// ---- pin/unpin the sidebar (persists across visits) ----
+const pinBtn = document.getElementById("side-pin");
+if (pinBtn && sideNav) {
+  let pinned = lsGet("navPinned", false);
+  function applyPin() {
+    document.body.classList.toggle("nav-pinned", pinned);
+    pinBtn.classList.toggle("on", pinned);
+    pinBtn.setAttribute("aria-pressed", String(pinned));
+    pinBtn.title = pinned ? "Unpin sidebar" : "Pin sidebar open";
+    if (pinned) { sideNav.classList.add("open"); navOverlay.classList.remove("show"); }
+    else { sideNav.classList.remove("open"); }
+  }
+  pinBtn.addEventListener("click", () => {
+    pinned = !pinned; lsSet("navPinned", pinned); applyPin();
+  });
+  // while pinned: burger unpins instead of toggling (link clicks stay untouched —
+  // the close handler itself checks the pinned state)
+  burger.addEventListener("click", e => {
+    if (pinned) { e.stopImmediatePropagation(); pinned = false; lsSet("navPinned", false); applyPin(); }
+  }, true);
+  applyPin();
+}
+
 const tocDrawer = document.getElementById("toc-drawer");
 if (tocDrawer) {
   document.getElementById("toc-tab").addEventListener("click", () =>

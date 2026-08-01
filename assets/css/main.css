@@ -532,6 +532,58 @@ article.post .footnotes {
 .post-actions .act-like.on { color: #c92a2a; border-color: #c92a2a; }
 .post-actions .act-save.on { color: var(--paper-accent); border-color: var(--paper-accent); }
 
+/* ---------- Top-center search, pin, cite, icons ---------- */
+.nav-search { position: relative; flex: 1; max-width: 580px; margin: 0 24px; }
+.nav-search input {
+  width: 100%; box-sizing: border-box;
+  background: var(--bg-raised) url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="%239aa4af" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.5-4.5"/></svg>') no-repeat 16px center / 16px;
+  color: var(--text);
+  border: 1px solid var(--border); border-radius: 999px;
+  padding: 12px 18px 12px 42px; font-family: var(--mono); font-size: .9rem;
+}
+.nav-search input:focus { outline: none; border-color: var(--accent); }
+.nav-search-results {
+  position: absolute; top: calc(100% + 6px); left: 0; right: 0; z-index: 95;
+  background: var(--bg-raised); border: 1px solid var(--border);
+  border-radius: 12px; overflow: hidden; box-shadow: 0 10px 26px rgba(0,0,0,.35);
+}
+.nav-search-results:empty { display: none; }
+.nav-search-results a { display: block; padding: 10px 14px; text-decoration: none; color: var(--text-dim); }
+.nav-search-results a:hover { background: var(--bg); }
+.nav-search-results a strong { display: block; font-size: .86rem; color: var(--text); }
+.nav-search-results a:hover strong { color: var(--accent); }
+.nav-search-results a small { font-size: .72rem; }
+@media (max-width: 760px) { .nav-search { display: none; } }
+
+#side-pin {
+  float: right; background: none; border: 1px solid transparent; border-radius: 6px;
+  cursor: pointer; font-size: .85rem; padding: 2px 6px; opacity: .55;
+}
+#side-pin:hover { opacity: 1; border-color: var(--border); }
+#side-pin.on { opacity: 1; border-color: var(--accent); background: var(--bg); }
+body.nav-pinned { padding-left: 232px; }
+body.nav-pinned .nav-overlay { display: none; }
+@media (max-width: 900px) { body.nav-pinned { padding-left: 0; } }
+
+.cite-pop {
+  max-width: var(--maxw-prose); margin: 10px 0 4px;
+  background: #efece4; border: 1px solid var(--paper-border); border-radius: 10px;
+  padding: 12px 16px; font-size: .8rem;
+}
+.cite-pop[hidden] { display: none; }
+.cite-row { display: flex; justify-content: space-between; align-items: center;
+  font-family: var(--mono); color: var(--paper-dim); margin-top: 6px; }
+.cite-pop pre {
+  background: #fff !important; color: #1c1e21 !important;
+  border: 1px solid var(--paper-border); border-radius: 8px;
+  padding: 10px 12px !important; font-size: .74rem !important;
+  white-space: pre-wrap; word-break: break-all;
+}
+.cite-pop .ed-btn { padding: 3px 10px; font-size: .7rem;
+  background: #fff; color: var(--paper-dim); border-color: var(--paper-border); }
+
+.icon { vertical-align: -2px; margin-right: 3px; }
+
 /* ---------- Print / PDF (watermarked) ---------- */
 .print-watermark, .print-copyright { display: none; }
 @media print {
