@@ -584,6 +584,16 @@ body.nav-pinned .nav-overlay { display: none; }
 
 .icon { vertical-align: -2px; margin-right: 3px; }
 
+/* ---------- Medium hub + manage page ---------- */
+.medium-badge {
+  font-family: var(--mono); font-size: .68rem; letter-spacing: .06em;
+  border: 1px solid var(--border); border-radius: 999px; padding: 1px 9px;
+  color: var(--accent-2);
+}
+.manage-actions { display: flex; gap: 8px; margin-top: 10px; }
+.manage-actions .ed-btn { text-decoration: none; font-size: .75rem; }
+.manage-delete:hover { border-color: #c92a2a !important; color: #c92a2a !important; }
+
 /* ---------- Print / PDF (watermarked) ---------- */
 .print-watermark, .print-copyright { display: none; }
 @media print {

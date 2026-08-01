@@ -1,0 +1,28 @@
+---
+layout: default
+title: Medium posts
+permalink: /medium/
+---
+<header class="hero">
+  <div class="prompt">[tanya@sriv:~$] <span class="path">curl medium.com/{{ site.data.medium.handle | default: "@me" }}</span><span class="cursor"></span></div>
+  <p class="tagline">My writing on Medium — synced automatically every day.
+  {% if site.medium and site.medium != "" %}<a href="{{ site.medium }}" target="_blank" rel="noopener">Visit the full profile ↗</a>{% endif %}</p>
+</header>
+
+<section class="section">
+  {% if site.data.medium.posts and site.data.medium.posts.size > 0 %}
+  <ul class="post-list">
+    {% for p in site.data.medium.posts %}
+    <li>
+      <div class="date">{{ p.date }}{% for t in p.tags %} · #{{ t }}{% endfor %} · <span class="medium-badge">medium ↗</span></div>
+      <h3><a href="{{ p.url }}" target="_blank" rel="noopener">{{ p.title }}</a></h3>
+      <p class="excerpt">{{ p.snippet }}</p>
+    </li>
+    {% endfor %}
+  </ul>
+  {% else %}
+  <p class="tagline" style="font-family:var(--mono);color:var(--text-dim)">
+    No Medium posts synced yet — the daily sync runs automatically, or trigger it
+    now: repo → Actions → medium-sync → Run workflow.</p>
+  {% endif %}
+</section>

@@ -54,11 +54,12 @@
   <a href="{{ '/' | relative_url }}" {% if page.url == '/' %}class="active"{% endif %}>~/home</a>
   <a href="{{ '/#projects' | relative_url }}">projects</a>
   <a href="{{ '/blog/' | relative_url }}" {% if page.url contains '/blog' %}class="active"{% endif %}>blog</a>
-  {% if site.medium and site.medium != "" %}<a href="{{ site.medium }}" target="_blank" rel="noopener">medium ↗</a>{% endif %}
+  {% if site.medium and site.medium != "" %}<a href="{{ '/medium/' | relative_url }}" {% if page.url contains '/medium' %}class="active"{% endif %}>medium</a>{% endif %}
   <a href="{{ '/post/' | relative_url }}" {% if page.url contains '/post' %}class="active"{% endif %}>✎ write</a>
   <a href="{{ '/about/' | relative_url }}" {% if page.url contains '/about' %}class="active"{% endif %}>about</a>
   <a href="{{ '/saved/' | relative_url }}" {% if page.url contains '/saved' %}class="active"{% endif %}>⚑ saved</a>
   <a href="{{ '/stats/' | relative_url }}" {% if page.url contains '/stats' %}class="active"{% endif %}>📊 my stats</a>
+  <a href="{{ '/manage/' | relative_url }}" {% if page.url contains '/manage' %}class="active"{% endif %}>🗂 manage</a>
   <div class="side-foot">
     <a href="{{ site.author.github }}" title="GitHub">{% include icon.html name="github" %} github</a>
     <a href="{{ site.author.linkedin }}" title="LinkedIn">{% include icon.html name="linkedin" %} linkedin</a>

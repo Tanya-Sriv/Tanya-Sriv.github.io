@@ -1,0 +1,21 @@
+name: medium-sync
+on:
+  schedule:
+    - cron: "23 14 * * *"   # daily ~7:23am Pacific (off-minute on purpose)
+  workflow_dispatch: {}      # "Run workflow" button for manual refresh
+permissions:
+  contents: write
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Fetch Medium feed
+        run: python .github/scripts/medium_sync.py
+      - name: Commit if changed
+        run: |
+          git config user.name "Tanya Srivastava"
+          git config user.email "Tanya-Sriv@users.noreply.github.com"
+          git add _data/medium.json
+          git diff --cached --quiet || git commit -m "chore: sync Medium posts"
+          git push
