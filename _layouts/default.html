@@ -18,17 +18,30 @@
 <body>
 
 <nav class="nav">
-  <a class="brand" href="{{ '/' | relative_url }}">tanya-sriv</a>
+  <div class="nav-left">
+    <button class="nav-burger" id="nav-burger" aria-label="Open menu">☰</button>
+    <a class="brand" href="{{ '/' | relative_url }}">tanya-sriv</a>
+  </div>
   <ul>
-    <li><a href="{{ '/' | relative_url }}" {% if page.url == '/' %}class="active"{% endif %}>~/home</a></li>
-    <li><a href="{{ '/#projects' | relative_url }}">projects</a></li>
-    <li><a href="{{ '/blog/' | relative_url }}" {% if page.url contains '/blog' %}class="active"{% endif %}>blog</a></li>
-    {% if site.medium and site.medium != "" %}<li><a href="{{ site.medium }}" target="_blank" rel="noopener">medium ↗</a></li>{% endif %}
-    <li><a href="{{ '/about/' | relative_url }}" {% if page.url contains '/about' %}class="active"{% endif %}>about</a></li>
     <li><button class="theme-btn" aria-label="Toggle color theme">◐ auto</button></li>
     <li><button class="focus-btn" aria-label="Focus mode: mute mascot audio" aria-pressed="false">⌁ focus</button></li>
   </ul>
 </nav>
+
+<div class="nav-overlay" id="nav-overlay"></div>
+<aside class="side-nav" id="side-nav">
+  <div class="side-title">[tanya@sriv:~$]</div>
+  <a href="{{ '/' | relative_url }}" {% if page.url == '/' %}class="active"{% endif %}>~/home</a>
+  <a href="{{ '/#projects' | relative_url }}">projects</a>
+  <a href="{{ '/blog/' | relative_url }}" {% if page.url contains '/blog' %}class="active"{% endif %}>blog</a>
+  {% if site.medium and site.medium != "" %}<a href="{{ site.medium }}" target="_blank" rel="noopener">medium ↗</a>{% endif %}
+  <a href="{{ '/post/' | relative_url }}" {% if page.url contains '/post' %}class="active"{% endif %}>✎ write</a>
+  <a href="{{ '/about/' | relative_url }}" {% if page.url contains '/about' %}class="active"{% endif %}>about</a>
+  <div class="side-foot">
+    <a href="{{ site.author.github }}">github</a>
+    <a href="{{ site.author.linkedin }}">linkedin</a>
+  </div>
+</aside>
 
 {{ content }}
 

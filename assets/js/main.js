@@ -188,6 +188,29 @@ if (mascot) {
   scheduleRoam();
 }
 
+// Left sidebar (hamburger) + right TOC drawer
+const sideNav = document.getElementById("side-nav");
+const navOverlay = document.getElementById("nav-overlay");
+const burger = document.getElementById("nav-burger");
+if (burger && sideNav) {
+  const setNav = open => {
+    sideNav.classList.toggle("open", open);
+    navOverlay.classList.toggle("show", open);
+  };
+  burger.addEventListener("click", () => setNav(!sideNav.classList.contains("open")));
+  navOverlay.addEventListener("click", () => setNav(false));
+  sideNav.addEventListener("click", e => {
+    if (e.target.tagName === "A" && !document.body.classList.contains("nav-pinned")) setNav(false);
+  });
+  document.addEventListener("keydown", e => { if (e.key === "Escape") setNav(false); });
+}
+const tocDrawer = document.getElementById("toc-drawer");
+if (tocDrawer) {
+  document.getElementById("toc-tab").addEventListener("click", () =>
+    tocDrawer.classList.toggle("open"));
+  if (window.innerWidth >= 1100) tocDrawer.classList.add("open");  // open by default on desktop
+}
+
 // Copy buttons on code blocks
 document.querySelectorAll("article.post pre").forEach(pre => {
   const btn = document.createElement("button");

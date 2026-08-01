@@ -1,6 +1,6 @@
 {% comment %}
-  Builds a sidebar TOC from the post's h2/h3 headings.
-  Kramdown auto-generates matching ids for headings.
+  Sidebar TOC as a right-edge slide drawer, built from the post's h2/h3
+  headings (kramdown auto-generates matching ids).
   Usage: {% include toc.html html=content %}
 {% endcomment %}
 {% assign chunks = include.html | split: '<h2' %}
@@ -22,10 +22,13 @@
   {% endfor %}
 {% endfor %}
 {% if items.size > 0 %}
-<aside class="toc">
-  <div class="toc-title">On this page</div>
-  <ol>
-    {% for item in items %}{{ item }}{% endfor %}
-  </ol>
-</aside>
+<div class="toc-drawer" id="toc-drawer">
+  <button class="toc-tab" id="toc-tab" aria-label="Toggle table of contents">contents</button>
+  <aside class="toc">
+    <div class="toc-title">On this page</div>
+    <ol>
+      {% for item in items %}{{ item }}{% endfor %}
+    </ol>
+  </aside>
+</div>
 {% endif %}
