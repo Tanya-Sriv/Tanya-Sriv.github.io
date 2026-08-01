@@ -1,0 +1,24 @@
+title: Tanya Srivastava
+description: >-
+  GPU & embedded systems infrastructure - heterogeneous SoCs, firmware
+  workload scheduling, and the tooling that keeps silicon honest.
+url: "https://tanya-sriv.github.io"
+baseurl: ""
+
+author:
+  name: Tanya Srivastava
+  github: https://github.com/Tanya-Sriv/
+  linkedin: https://www.linkedin.com/in/tanya-sriv/
+  email: tanya.1108srivastava@gmail.com
+
+markdown: kramdown
+kramdown:
+  input: GFM
+  syntax_highlighter: rouge
+
+permalink: /blog/:year/:month/:title/
+
+exclude:
+  - README.md
+  - Gemfile
+  - Gemfile.lock
