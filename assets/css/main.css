@@ -29,6 +29,21 @@
   --maxw-prose: 720px;
 }
 
+/* Light terminal theme — applied when JS stamps data-theme="light".
+   The toggle cycles auto → light → dark; "auto" resolves to the OS
+   preference in JS (see head script + main.js), so CSS stays two-state. */
+html[data-theme="light"] {
+  --bg: #f7f5f0;            /* warm paper, matches the blog reading surface */
+  --bg-raised: #ffffff;
+  --border: #e0dcd3;
+  --text: #1c1e21;
+  --text-dim: #5b646e;
+  --accent: #1a7f37;        /* forest green — readable on light */
+  --accent-2: #0b6bcb;
+}
+html[data-theme="light"] .card { box-shadow: 0 1px 3px rgba(28,30,33,.06); }
+html[data-theme="light"] .card:hover { box-shadow: 0 4px 14px rgba(28,30,33,.10); }
+
 * { box-sizing: border-box; }
 html { scroll-behavior: smooth; }
 body {
