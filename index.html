@@ -1,0 +1,45 @@
+---
+layout: default
+---
+<header class="hero">
+  <div class="prompt">[tanya@sriv:~$] <span class="path">whoami</span><span class="cursor"></span></div>
+  <p class="tagline">
+    Engineer working on <strong>GPU &amp; embedded systems infrastructure</strong> —
+    heterogeneous SoCs, firmware workload scheduling, and the tooling that keeps
+    silicon honest. I write about what I build.
+  </p>
+</header>
+
+<section class="section" id="projects">
+  <h2>ls ~/projects</h2>
+  <div class="cards">
+    <div class="card">
+      <h3><a href="https://github.com/Tanya-Sriv/github-actions-semantic-benchmark">github-actions-semantic-benchmark</a></h3>
+      <p>Benchmarking framework for semantic evaluation, wired into CI with GitHub Actions. Python.</p>
+      <div class="tags"><span>python</span><span>ci</span><span>benchmarking</span></div>
+    </div>
+    <div class="card">
+      <h3><a href="#">soc-orchestrator <em style="color:var(--text-dim);font-size:.75em">(placeholder)</em></a></h3>
+      <p>Simulation-driven study of heterogeneous SoC orchestration — scheduling firmware workloads across CPU/GPU/NPU blocks.</p>
+      <div class="tags"><span>soc</span><span>scheduling</span><span>simulation</span></div>
+    </div>
+    <div class="card">
+      <h3><a href="#">gpu-telemetry-kit <em style="color:var(--text-dim);font-size:.75em">(placeholder)</em></a></h3>
+      <p>Lightweight telemetry and profiling harness for GPU workloads on embedded targets.</p>
+      <div class="tags"><span>gpu</span><span>profiling</span><span>embedded</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="writing">
+  <h2>tail -3 ~/blog</h2>
+  <ul class="post-list">
+    {% for post in site.posts limit: 3 %}
+    <li>
+      <div class="date">{{ post.date | date: "%Y-%m-%d" }}</div>
+      <h3><a href="{{ post.url | relative_url }}">{{ post.title }}</a></h3>
+      <p class="excerpt">{{ post.excerpt | strip_html | truncate: 180 }}</p>
+    </li>
+    {% endfor %}
+  </ul>
+</section>
