@@ -20,17 +20,26 @@ if (themeBtn) {
   apply(pref());
 }
 
-// Mascot: click (or tap) to jump
+// Mascot: click to jump, giggle (synthesized — no audio files), and speak.
 const mascot = document.getElementById("mascot");
 if (mascot) {
+  const phrases = ["ba-na-naaa! 🍌", "bello!", "bee-boop!", "hee-hee-ha!", "ba-naa-na?!", "mo-cha ba-na-na! ☕🍌"];
+
   mascot.addEventListener("click", () => {
     mascot.classList.remove("jump");
     void mascot.offsetWidth;          // restart the animation
     mascot.classList.add("jump");
+    const phrase = phrases[Math.floor(Math.random() * phrases.length)];
+    bubble.textContent = phrase;
+    bubble.classList.add("show");
+    clearTimeout(bubbleTimer);
+    bubbleTimer = setTimeout(() => bubble.classList.remove("show"), 1600);
+    giggle();
   });
   mascot.addEventListener("animationend", e => {
     if (e.animationName === "mascot-jump") mascot.classList.remove("jump");
   });
+
 }
 
 // Copy buttons on code blocks
