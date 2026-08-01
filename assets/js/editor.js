@@ -110,6 +110,71 @@ function mdRender(src) {
   const preview = document.getElementById("ed-preview");
   const titleEl = document.getElementById("ed-title");
   const tagsEl = document.getElementById("ed-tags");
+  const visual = document.getElementById("ed-visual");
+  const visualWrap = document.getElementById("ed-visual-wrap");
+  const mdWrap = document.getElementById("ed-md-wrap");
+  const bubble = document.getElementById("ed-bubble");
+  let mode = "visual";
+
+  // ----- mode tabs -----
+  const mv = document.getElementById("mode-visual"), mm = document.getElementById("mode-md");
+  function setMode(m) {
+    mode = m;
+    visualWrap.style.display = m === "visual" ? "" : "none";
+    mdWrap.style.display = m === "md" ? "" : "none";
+    mv.classList.toggle("on", m === "visual");
+    mm.classList.toggle("on", m === "md");
+    hideBubble();
+  }
+  mv.addEventListener("click", () => setMode("visual"));
+  mm.addEventListener("click", () => setMode("md"));
+
+  // ----- Medium-style floating bubble on selection (visual mode) -----
+  function hideBubble() { bubble.hidden = true; }
+  function showBubble() {
+    const sel = window.getSelection();
+    if (!sel || sel.isCollapsed || !visual.contains(sel.anchorNode)) { hideBubble(); return; }
+    const rect = sel.getRangeAt(0).getBoundingClientRect();
+    if (!rect.width) { hideBubble(); return; }
+    bubble.hidden = false;
+    const bw = bubble.offsetWidth;
+    bubble.style.left = Math.max(8, rect.left + rect.width / 2 - bw / 2 + window.scrollX) + "px";
+    bubble.style.top = (rect.top + window.scrollY - bubble.offsetHeight - 10) + "px";
+  }
+  document.addEventListener("mouseup", () => setTimeout(showBubble, 1));
+  document.addEventListener("keyup", e => {
+    if (visual.contains(document.activeElement) || document.activeElement === visual)
+      setTimeout(showBubble, 1);
+  });
+  visual.addEventListener("blur", () => setTimeout(() => {
+    if (!bubble.contains(document.activeElement)) hideBubble();
+  }, 150));
+
+  bubble.querySelectorAll("[data-cmd]").forEach(btn =>
+    btn.addEventListener("mousedown", e => {
+      e.preventDefault();                       // keep the selection alive
+      const cmd = btn.dataset.cmd;
+      if (cmd === "link") {
+        const url = prompt("Link URL:", "https://");
+        if (url) document.execCommand("createLink", false, url);
+      } else if (cmd === "h2" || cmd === "h3") {
+        document.execCommand("formatBlock", false, cmd.toUpperCase());
+      } else if (cmd === "quote") {
+        document.execCommand("formatBlock", false, "BLOCKQUOTE");
+      } else if (cmd === "p") {
+        document.execCommand("formatBlock", false, "P");
+      } else {
+        document.execCommand(cmd, false, null);
+      }
+      setTimeout(showBubble, 1);
+    }));
+
+  // ----- block inserts (visual mode) -----
+  document.querySelectorAll("[data-vins]").forEach(btn =>
+    btn.addEventListener("click", () => {
+      visual.focus();
+      document.execCommand("insertHTML", false, btn.dataset.vins);
+    }));
 
   function insert(snippet, wrapEnd) {
     const s = ta.selectionStart, e = ta.selectionEnd, v = ta.value;
@@ -143,7 +208,7 @@ function mdRender(src) {
     const tags = (tagsEl.value || "").split(",").map(t => t.trim()).filter(Boolean);
     // Visual mode publishes its HTML directly — kramdown passes raw HTML
     // through untouched, so what you see is exactly what ships.
-    const body = ta.value;
+    const body = mode === "visual" ? visual.innerHTML.trim() : ta.value;
     return "---\nlayout: post\ntitle: \"" + (titleEl.value || "Untitled").replace(/"/g, '\\"') +
       "\"\ntags: [" + tags.join(", ") + "]\n---\n\n" + body + "\n";
   }

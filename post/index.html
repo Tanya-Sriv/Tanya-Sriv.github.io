@@ -14,8 +14,39 @@ permalink: /post/
     </div>
   </div>
 
+  <div class="ed-modes">
+    <button id="mode-visual" class="on">✎ visual</button>
+    <button id="mode-md">{ } markdown</button>
+    <span class="ed-modehint">select text for the formatting bubble · full ribbon below</span>
+  </div>
+
+  <!-- ===== VISUAL (Medium-style) MODE ===== -->
+  <div id="ed-visual-wrap">
+        <div class="ed-toolbar">
+      <button data-vins='<table><thead><tr><th>Column</th><th>Column</th><th>Column</th></tr></thead><tbody><tr><td>cell</td><td>cell</td><td>cell</td></tr><tr><td>cell</td><td>cell</td><td>cell</td></tr></tbody></table><p><br></p>' title="Table — type straight into the cells">table</button>
+      <button data-vins='<pre><code>your code here</code></pre><p><br></p>' title="Code block">code</button>
+      <button data-vins='<ul><li>item<ul><li>nested item</li></ul></li><li>item</li></ul><p><br></p>' title="Nested list">list</button>
+      <button data-vins='<img src="https://image-url" alt="image">' title="Image">img</button>
+      <button data-vins='<video controls width="100%" src="/assets/video/clip.mp4"></video><p><br></p>' title="Self-hosted video">video</button>
+      <button data-vins='<iframe width="100%" height="400" src="https://www.youtube.com/embed/VIDEO_ID" frameborder="0" allowfullscreen></iframe><p><br></p>' title="YouTube embed">yt</button>
+      <button data-vins='<sup><a href="#fn-1" id="fnref-1">1</a></sup>' title="Footnote marker">fn</button>
+      <button data-vins='<hr>' title="Divider">─</button>
+    </div>
+    <div class="post-surface ed-visual-surface">
+      <article class="post ed-visual" id="ed-visual" contenteditable="true">
+        <h2>Start writing here</h2>
+        <p>This is the visual editor — it <em>is</em> the page your readers will see.
+        Select text for the formatting bubble, or use the full ribbon above:
+        colors, highlights, alignment, lists, tables you type into, and the
+        <strong>✏ draw</strong> tool for hand sketches.</p>
+        <p>Delete all this and write your post — or hit <em>⤓ import from Medium</em>
+        to bring an existing story over.</p>
+      </article>
+    </div>
+  </div>
+
   <!-- ===== MARKDOWN MODE ===== -->
-  <div id="ed-md-wrap">
+  <div id="ed-md-wrap" style="display:none">
     <div class="ed-toolbar">
       <button data-ins='["## ", null]' title="Heading 2">H2</button>
       <button data-ins='["### ", null]' title="Heading 3">H3</button>
@@ -45,6 +76,34 @@ Prefer raw markdown? It lives here, with live preview.</textarea>
   <p class="ed-hint">Publishing: <em>publish on GitHub</em> opens a pre-filled new-file page in
   your repo — review and press <em>Commit</em>; the site rebuilds in ~a minute. Long post?
   Use <em>download .md</em> and drop the file into <code>_posts/</code>.</p>
+</div>
+
+<!-- floating selection bubble (Medium-style) -->
+<div id="ed-bubble" class="ed-bubble" hidden>
+  <button data-cmd="bold"><b>B</b></button>
+  <button data-cmd="italic"><i>I</i></button>
+  <button data-cmd="strikeThrough"><del>S</del></button>
+  <button data-cmd="link">link</button>
+  <span class="ed-bubble-sep"></span>
+  <button data-cmd="h2">H2</button>
+  <button data-cmd="h3">H3</button>
+  <button data-cmd="quote">❝</button>
+  <button data-cmd="p">¶</button>
+</div>
+
+<!-- import-from-Medium modal -->
+<div id="imp-modal" class="ed-modal" hidden>
+  <div class="ed-modal-box">
+    <h3>⤓ Import from Medium</h3>
+    <p class="ed-modal-hint">Open your story on Medium → select all (Ctrl/Cmd&#8239;A) →
+    copy (Ctrl/Cmd&#8239;C) → click the box below → paste (Ctrl/Cmd&#8239;V).
+    Formatting, images and embeds come along; Medium clutter is stripped.</p>
+    <div id="imp-paste" class="imp-paste" contenteditable="true"></div>
+    <div class="ed-modal-actions">
+      <button id="imp-cancel" class="ed-btn">cancel</button>
+      <button id="imp-go" class="ed-btn ed-primary">import →</button>
+    </div>
+  </div>
 </div>
 
 <script src="{{ '/assets/js/editor.js' | relative_url }}"></script>

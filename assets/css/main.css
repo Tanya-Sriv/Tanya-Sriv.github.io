@@ -334,6 +334,34 @@ article.post .footnotes {
 .ed-preview-wrap { border-radius: 10px; padding: 24px 28px; overflow-y: auto; max-height: 75vh; }
 .ed-preview-wrap article.post { font-size: 1rem; }
 .ed-hint { color: var(--text-dim); font-size: .82rem; font-family: var(--mono); margin-top: 12px; }
+.ed-modes { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; }
+.ed-modes button {
+  font-family: var(--mono); font-size: .82rem; cursor: pointer;
+  background: none; color: var(--text-dim);
+  border: 1px solid var(--border); border-radius: 999px; padding: 5px 14px;
+}
+.ed-modes button.on { color: var(--accent); border-color: var(--accent); }
+.ed-modehint { color: var(--text-dim); font-size: .75rem; font-family: var(--mono); }
+.ed-visual-surface { border-radius: 10px; padding: 36px 44px; }
+.ed-visual { min-height: 420px; outline: none; }
+.ed-visual:empty::before { content: "Start writing…"; color: var(--paper-dim); }
+.ed-bubble[hidden] { display: none; }
+.ed-bubble {
+  position: absolute; z-index: 70; display: flex; gap: 2px; align-items: center;
+  background: #22272e; border: 1px solid #444c56; border-radius: 8px;
+  padding: 4px 6px; box-shadow: 0 6px 18px rgba(0,0,0,.35);
+}
+.ed-bubble::after {
+  content: ""; position: absolute; left: 50%; bottom: -6px; margin-left: -6px;
+  border: 6px solid transparent; border-top-color: #22272e; border-bottom: none;
+}
+.ed-bubble button {
+  font-family: var(--mono); font-size: .8rem; cursor: pointer;
+  background: none; border: none; color: #e6edf3; padding: 4px 8px; border-radius: 5px;
+}
+.ed-bubble button:hover { background: #444c56; color: #56d364; }
+.ed-bubble-sep { width: 1px; height: 18px; background: #444c56; margin: 0 3px; }
+
 /* ---------- Responsive ---------- */
 @media (max-width: 900px) {
   .post-wrap { grid-template-columns: 1fr; }
