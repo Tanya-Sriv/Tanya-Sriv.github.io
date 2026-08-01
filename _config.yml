@@ -11,6 +11,9 @@ author:
   linkedin: https://www.linkedin.com/in/tanya-sriv/
   email: tanya.1108srivastava@gmail.com
 
+# Analytics (GoatCounter). Set to your dashboard code; empty disables tracking.
+goatcounter: tanya-sriv
+
 markdown: kramdown
 kramdown:
   input: GFM
