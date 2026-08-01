@@ -44,6 +44,14 @@ html[data-theme="light"] {
 html[data-theme="light"] .card { box-shadow: 0 1px 3px rgba(28,30,33,.06); }
 html[data-theme="light"] .card:hover { box-shadow: 0 4px 14px rgba(28,30,33,.10); }
 
+/* Theme toggle button (in nav) */
+.theme-btn {
+  font-family: var(--mono); font-size: 0.8rem;
+  background: none; border: 1px solid var(--border); border-radius: 999px;
+  color: var(--text-dim); padding: 3px 12px; cursor: pointer;
+}
+.theme-btn:hover { color: var(--accent); border-color: var(--accent); }
+
 * { box-sizing: border-box; }
 html { scroll-behavior: smooth; }
 body {

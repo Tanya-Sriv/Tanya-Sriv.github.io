@@ -6,6 +6,14 @@
 <title>{% if page.title %}{{ page.title }} — {{ site.title }}{% else %}{{ site.title }} — GPU &amp; Embedded Systems{% endif %}</title>
 <meta name="description" content="{{ page.excerpt | default: site.description | strip_html | strip_newlines | truncate: 160 }}">
 <link rel="stylesheet" href="{{ '/assets/css/main.css' | relative_url }}">
+<script>
+  // Runs before first paint to prevent a wrong-theme flash (FOUC).
+  (function () {
+    var p = localStorage.getItem("theme") || "auto";
+    var dark = matchMedia("(prefers-color-scheme: dark)").matches;
+    document.documentElement.dataset.theme = p === "auto" ? (dark ? "dark" : "light") : p;
+  })();
+</script>
 </head>
 <body>
 
@@ -16,6 +24,7 @@
     <li><a href="{{ '/#projects' | relative_url }}">projects</a></li>
     <li><a href="{{ '/blog/' | relative_url }}" {% if page.url contains '/blog' %}class="active"{% endif %}>blog</a></li>
     <li><a href="{{ '/about/' | relative_url }}" {% if page.url contains '/about' %}class="active"{% endif %}>about</a></li>
+    <li><button class="theme-btn" aria-label="Toggle color theme">◐ auto</button></li>
   </ul>
 </nav>
 

@@ -1,3 +1,25 @@
+// Theme toggle: cycles auto → light → dark. "auto" follows the OS setting.
+// (The inline <head> script already applied the saved theme pre-paint.)
+const themeBtn = document.querySelector(".theme-btn");
+if (themeBtn) {
+  const osDark = matchMedia("(prefers-color-scheme: dark)");
+  const order = ["auto", "light", "dark"];
+  const labels = { auto: "◐ auto", light: "☀ light", dark: "☾ dark" };
+  const pref = () => localStorage.getItem("theme") || "auto";
+  const apply = p => {
+    document.documentElement.dataset.theme =
+      p === "auto" ? (osDark.matches ? "dark" : "light") : p;
+    themeBtn.textContent = labels[p];
+  };
+  themeBtn.addEventListener("click", () => {
+    const next = order[(order.indexOf(pref()) + 1) % order.length];
+    localStorage.setItem("theme", next);
+    apply(next);
+  });
+  osDark.addEventListener("change", () => apply(pref())); // live OS changes in auto mode
+  apply(pref());
+}
+
 // Copy buttons on code blocks
 document.querySelectorAll("article.post pre").forEach(pre => {
   const btn = document.createElement("button");
