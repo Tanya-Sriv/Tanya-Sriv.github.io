@@ -1,10 +1,10 @@
 ---
 layout: post
-title: "dummy git to medium testing 2 images"
+title: "dummy git to medium testing 3 images"
 tags: [test]
 ---
 
-<h2>Start writing here</h2><div><img src="/assets/images/2026-08-02-dummy-git-to-medium-testing-1.png" alt="image" style="width: 114.794px; height: auto;">&nbsp; &nbsp;&nbsp;<img src="/assets/images/2026-08-02-dummy-git-to-medium-testing-1.png" alt="image" style="font-size: 1.12rem; width: 109.2px; height: auto;"></div>
+<h2>Start writing here</h2><div><img src="/assets/images/2026-08-02-dummy-git-to-medium-testing-1.png" alt="image" style="width: 114.794px; height: auto;">&nbsp; &nbsp;&nbsp;<img src="/assets/images/2026-08-02-dummy-git-to-medium-testing-1.png" alt="image" style="font-size: 1.12rem; width: 109.2px; height: auto;">&nbsp;<img src="/assets/images/2026-08-02-dummy-git-to-medium-testing-1.png" alt="image" style="font-size: 1.12rem; width: 105.2px; height: auto;"></div>
         <p>This is the visual editor — it <em>is</em> the page your readers will see.
         Select text for the formatting bubble, or use the full ribbon above:
         colors, highlights, alignment, lists, tables you type into, and the
