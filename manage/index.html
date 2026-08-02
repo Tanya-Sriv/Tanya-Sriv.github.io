@@ -17,15 +17,18 @@ permalink: /manage/
       <div class="date">{{ post.date | date: "%Y-%m-%d" }}{% for t in post.tags %} · #{{ t }}{% endfor %}</div>
       <h3><a href="{{ post.url | relative_url }}">{{ post.title }}</a></h3>
       <div class="manage-actions">
+        <a class="ed-btn" href="{{ '/post/' | relative_url }}?edit={{ post.path }}">✎ edit</a>
         <a class="ed-btn" href="https://github.com/Tanya-Sriv/Tanya-Sriv.github.io/edit/main/{{ post.path }}"
-           target="_blank" rel="noopener">✎ edit</a>
+           target="_blank" rel="noopener" title="Edit raw file on GitHub">{ } source</a>
         <a class="ed-btn manage-delete" href="https://github.com/Tanya-Sriv/Tanya-Sriv.github.io/delete/main/{{ post.path }}"
            target="_blank" rel="noopener">🗑 delete</a>
       </div>
     </li>
     {% endfor %}
   </ul>
-  <p class="ed-hint">Deleting opens GitHub's delete screen for that post's file —
+  <p class="ed-hint">✎ edit opens the post in this site's own editor (needs the one-time
+  ⚙ publish token to save). { } source edits the raw file on GitHub instead.
+  Deleting opens GitHub's delete screen for that post's file —
   press "Commit changes" there and the site rebuilds without it (~1 min).
   Nothing is ever lost: deleted posts stay in git history and can be restored.</p>
 </section>

@@ -465,11 +465,51 @@ function mdRender(src) {
     return d.toISOString().slice(0, 10);
   }
   function fileName() { return fileDate() + "-" + slug() + ".md"; }
+  // ----- edit mode: /post/?edit=_posts/... loads an existing post -----
+  let editPath = null, editFM = null;
+  async function loadForEdit(path) {
+    try {
+      const res = await fetch("https://raw.githubusercontent.com/Tanya-Sriv/Tanya-Sriv.github.io/main/" +
+        path + "?t=" + Date.now());
+      if (!res.ok) throw new Error(res.status);
+      const text = await res.text();
+      const m = text.match(/^---\n([\s\S]*?)\n---\n?/);
+      if (!m) throw new Error("no front matter");
+      editPath = path; editFM = m[0];
+      const fm = m[1], body = text.slice(m[0].length).trim();
+      const tm = fm.match(/^title:\s*"?(.*?)"?\s*$/m);
+      if (tm) titleEl.value = tm[1].replace(/\\"/g, '"');
+      const gm = fm.match(/^tags:\s*\[(.*)\]/m);
+      if (gm) tagsEl.value = gm[1];
+      titleEl.disabled = false;
+      if (/^</.test(body)) {                     // HTML body (visual/imported) → visual mode
+        setMode("visual"); visual.innerHTML = body;
+      } else {                                    // markdown body → markdown mode
+        setMode("md"); ta.value = body; render();
+      }
+      const btn = document.getElementById("ed-github");
+      if (btn) btn.textContent = "update →";
+      document.title = "Editing: " + (titleEl.value || path);
+    } catch (e) {
+      alert("Couldn't load post for editing (" + e.message + ") — it may have just been created; try again in a minute.");
+    }
+  }
+  const editParam = new URLSearchParams(location.search).get("edit");
+  if (editParam && /^_posts\/[\w.\-]+$/.test(editParam)) loadForEdit(editParam);
+
   function fullPost() {
     const tags = (tagsEl.value || "").split(",").map(t => t.trim()).filter(Boolean);
     // Visual mode publishes its HTML directly — kramdown passes raw HTML
     // through untouched, so what you see is exactly what ships.
     const body = mode === "visual" ? visual.innerHTML.trim() : ta.value;
+    if (editPath && editFM) {
+      // preserve the original front matter (date, medium_url, canonical…);
+      // update only title and tags
+      let fm = editFM.replace(/^title:.*$/m,
+        'title: "' + (titleEl.value || "Untitled").replace(/"/g, '\\"') + '"');
+      if (/^tags:/m.test(fm)) fm = fm.replace(/^tags:.*$/m, "tags: [" + tags.join(", ") + "]");
+      return fm + "\n" + body + "\n";
+    }
     return "---\nlayout: post\ntitle: \"" + (titleEl.value || "Untitled").replace(/"/g, '\\"') +
       "\"\ntags: [" + tags.join(", ") + "]\n---\n\n" + body + "\n";
   }
@@ -531,15 +571,17 @@ function mdRender(src) {
       for (const m of imgs) {
         n++;
         const ext = m[2] === "jpeg" ? "jpg" : m[2];
-        const path = "assets/images/" + fileName().replace(/\.md$/, "") + "-" + n + "." + ext;
+        const base = (editPath ? editPath.split("/").pop() : fileName()).replace(/\.md$/, "");
+        const path = "assets/images/" + base + "-" + n + "." + ext;
         btn.textContent = "uploading image " + n + "/" + imgs.length + "…";
         await ghPut(path, m[3], "chore: add image for " + slug(), token);
         body = body.split(m[1]).join("/" + path);
       }
-      btn.textContent = "committing post…";
-      await ghPut("_posts/" + fileName(), b64utf8(body), "post: " + (titleEl.value || "untitled"), token);
-      btn.textContent = "published ✓";
-      setTimeout(() => { btn.textContent = "publish →"; btn.disabled = false; }, 2500);
+      btn.textContent = editPath ? "updating post…" : "committing post…";
+      const target = editPath || ("_posts/" + fileName());
+      await ghPut(target, b64utf8(body), (editPath ? "post: update " : "post: ") + (titleEl.value || "untitled"), token);
+      btn.textContent = editPath ? "updated ✓" : "published ✓";
+      setTimeout(() => { btn.textContent = editPath ? "update →" : "publish →"; btn.disabled = false; }, 2500);
       alert("Published! The site rebuilds in ~1 minute:\nhttps://tanya-sriv.github.io/blog/\n\n(Images extracted: " + imgs.length + ")");
     } catch (e) {
       btn.textContent = "publish →"; btn.disabled = false;
