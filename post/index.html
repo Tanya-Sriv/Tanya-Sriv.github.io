@@ -11,7 +11,8 @@ permalink: /post/
       <button id="ed-import" class="ed-btn">⤓ import from Medium</button>
       <button id="ed-copy" class="ed-btn">copy .md</button>
       <button id="ed-download" class="ed-btn">download .md</button>
-      <button id="ed-github" class="ed-btn ed-primary">publish on GitHub →</button>
+      <button id="ed-github" class="ed-btn ed-primary">publish →</button>
+      <button id="ed-token" class="ed-btn" title="Set up direct publishing (one-time GitHub token)">⚙</button>
     </div>
   </div>
 
@@ -119,9 +120,9 @@ Prefer raw markdown? It lives here, with live preview.</textarea>
     </div>
   </div>
 
-  <p class="ed-hint">Publishing: <em>publish on GitHub</em> opens a pre-filled new-file page in
-  your repo — review and press <em>Commit</em>; the site rebuilds in ~a minute. Long post?
-  Use <em>download .md</em> and drop the file into <code>_posts/</code>.</p>
+  <p class="ed-hint">Publishing: with direct publish set up (⚙, one-time), <em>publish →</em>
+  commits the post straight to the repo — any size, images auto-extracted to assets/images/.
+  Without a token it falls back to GitHub's pre-filled editor (short posts only).</p>
 </div>
 
 <!-- floating selection bubble (Medium-style) -->

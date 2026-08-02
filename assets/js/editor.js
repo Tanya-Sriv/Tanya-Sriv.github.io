@@ -487,13 +487,76 @@ function mdRender(src) {
     a.click();
     URL.revokeObjectURL(a.href);
   });
+  // ----- direct publishing via GitHub API (any size, images extracted) -----
+  const GH_REPO = "Tanya-Sriv/Tanya-Sriv.github.io";
+  function ghToken() { try { return localStorage.getItem("gh_token") || ""; } catch (e) { return ""; } }
+  const tokenBtn = document.getElementById("ed-token");
+  if (tokenBtn) tokenBtn.addEventListener("click", () => {
+    const cur = ghToken();
+    const t = prompt(
+      "Direct publishing setup (one-time).\n\n" +
+      "Paste a fine-grained GitHub token scoped to ONLY this repo with " +
+      "Contents: Read & write (GitHub → Settings → Developer settings → " +
+      "Fine-grained tokens).\n\nStored only in THIS browser. " +
+      (cur ? "A token is currently saved — paste a new one, or clear the box and OK to remove it." : ""),
+      cur ? "(saved)" : "");
+    if (t === null) return;
+    try {
+      if (t.trim() && t !== "(saved)") { localStorage.setItem("gh_token", t.trim()); alert("Saved — publish → now commits directly."); }
+      else if (!t.trim()) { localStorage.removeItem("gh_token"); alert("Token removed — publish falls back to GitHub's editor."); }
+    } catch (e) { alert("Could not access browser storage."); }
+  });
+
+  function b64utf8(str) { return btoa(unescape(encodeURIComponent(str))); }
+  async function ghPut(path, contentB64, message, token) {
+    const api = "https://api.github.com/repos/" + GH_REPO + "/contents/" + path;
+    const headers = { "Authorization": "Bearer " + token, "Accept": "application/vnd.github+json" };
+    let sha;
+    const probe = await fetch(api, { headers });
+    if (probe.status === 200) sha = (await probe.json()).sha;   // updating an existing file
+    const body = { message, content: contentB64 };
+    if (sha) body.sha = sha;
+    const res = await fetch(api, { method: "PUT", headers, body: JSON.stringify(body) });
+    if (!res.ok) throw new Error(path + " → " + res.status + " " + (await res.text()).slice(0, 160));
+  }
+
+  async function apiPublish(token) {
+    const btn = document.getElementById("ed-github");
+    btn.disabled = true; btn.textContent = "publishing…";
+    try {
+      let body = fullPost();
+      // extract embedded data-URL images into real files (smaller posts, faster pages)
+      const imgs = [...body.matchAll(/"(data:image\/(png|jpe?g|gif|webp);base64,([A-Za-z0-9+/=]+))"/g)];
+      let n = 0;
+      for (const m of imgs) {
+        n++;
+        const ext = m[2] === "jpeg" ? "jpg" : m[2];
+        const path = "assets/images/" + fileName().replace(/\.md$/, "") + "-" + n + "." + ext;
+        btn.textContent = "uploading image " + n + "/" + imgs.length + "…";
+        await ghPut(path, m[3], "chore: add image for " + slug(), token);
+        body = body.split(m[1]).join("/" + path);
+      }
+      btn.textContent = "committing post…";
+      await ghPut("_posts/" + fileName(), b64utf8(body), "post: " + (titleEl.value || "untitled"), token);
+      btn.textContent = "published ✓";
+      setTimeout(() => { btn.textContent = "publish →"; btn.disabled = false; }, 2500);
+      alert("Published! The site rebuilds in ~1 minute:\nhttps://tanya-sriv.github.io/blog/\n\n(Images extracted: " + imgs.length + ")");
+    } catch (e) {
+      btn.textContent = "publish →"; btn.disabled = false;
+      alert("Publish failed: " + e.message + "\n\nCheck the token (⚙) — it may have expired or lack Contents write access. 'download .md' always works as backup.");
+    }
+  }
+
   const gh = document.getElementById("ed-github");
   if (gh) gh.addEventListener("click", () => {
-    const base = "https://github.com/Tanya-Sriv/Tanya-Sriv.github.io/new/main/_posts";
+    const token = ghToken();
+    if (token) { apiPublish(token); return; }
+    // fallback: GitHub's pre-filled new-file editor (URL-size limited)
+    const base = "https://github.com/" + GH_REPO + "/new/main/_posts";
     const url = base + "?filename=" + encodeURIComponent(fileName()) +
       "&value=" + encodeURIComponent(fullPost());
     if (url.length > 7500) {
-      alert("Post is too long for URL prefill — use 'download .md' and drag the file into GitHub instead.");
+      alert("Post is too big for the no-token fallback (images count as text!).\n\nEither set up direct publishing (⚙ button, one-time token) — recommended — or use 'download .md' and drop the file into _posts/ on GitHub.");
       return;
     }
     window.open(url, "_blank");
