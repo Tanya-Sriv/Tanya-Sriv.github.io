@@ -4,7 +4,7 @@
     {
       "title": "What Does Cadence ChipStack AI Super Agent Actually Do?",
       "url": "https://medium.com/@tanya_srivastava/what-does-cadence-chipstack-ai-super-agent-actually-do-4841e194d453",
-      "date": "Fri, 24 Jul 2026",
+      "date": "Jul 24, 2026",
       "tags": [
         "eda",
         "semiconductor-engineering",
@@ -17,7 +17,7 @@
     {
       "title": "Is Your System Really Fast?",
       "url": "https://medium.com/@tanya_srivastava/is-your-system-really-fast-9e6be9f2bee2",
-      "date": "Fri, 24 Jul 2026",
+      "date": "Jul 24, 2026",
       "tags": [
         "automation-testing",
         "software-engineering",
@@ -30,7 +30,7 @@
     {
       "title": "Building Your First MCP Server in Python: A Step-by-Step Guide",
       "url": "https://medium.com/@tanya_srivastava/building-your-first-mcp-server-in-python-a-step-by-step-guide-b7cd8f3d9838",
-      "date": "Thu, 23 Jul 2026",
+      "date": "Jul 23, 2026",
       "tags": [
         "gpu",
         "ai-agent",
@@ -38,12 +38,12 @@
         "infrastructure"
       ],
       "snippet": "Create tools, resources, and prompts, test them with MCP Inspector, and understand what happens behind the scenes You have learned what the Model Context Protocol is. You understand that an MCP application generally invo",
-      "image": "https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=b7cd8f3d9838"
+      "image": ""
     },
     {
       "title": "Model Context Protocol (MCP) Explained: A Beginner’s Guide",
       "url": "https://medium.com/@tanya_srivastava/model-context-protocol-mcp-explained-a-beginners-guide-764b342fbb80",
-      "date": "Thu, 23 Jul 2026",
+      "date": "Jul 23, 2026",
       "tags": [
         "ai-agent",
         "artificial-intelligence",
@@ -56,7 +56,7 @@
     {
       "title": "Kubernetes in a Minute: The Simplest Mental Model You Need",
       "url": "https://medium.com/@tanya_srivastava/kubernetes-in-a-minute-the-simplest-mental-model-you-need-6ea46deecec1",
-      "date": "Wed, 22 Jul 2026",
+      "date": "Jul 22, 2026",
       "tags": [
         "infrastructure-as-code",
         "kubernetes-cluster",
@@ -64,12 +64,12 @@
         "cicd-pipeline"
       ],
       "snippet": "Kubernetes can seem intimidating because it comes with a large vocabulary: Pods, Nodes, Services, Deployments, schedulers, controllers, and clusters. But the basic idea is much simpler: Kubernetes decides where applicati",
-      "image": "https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=6ea46deecec1"
+      "image": ""
     },
     {
       "title": "Building CI/CD Pipelines for GPU Validation",
       "url": "https://medium.com/@tanya_srivastava/building-ci-cd-pipelines-for-gpu-validation-86b468130c48",
-      "date": "Tue, 21 Jul 2026",
+      "date": "Jul 21, 2026",
       "tags": [
         "platform-engineering",
         "gpu",
@@ -77,7 +77,7 @@
         "software-testing"
       ],
       "snippet": "A practical framework for test planning, hardware scheduling, artifact traceability, failure classification, and evidence-based quality gates Disclaimer: The views expressed in this article are my own. The architecture, ",
-      "image": "https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=86b468130c48"
+      "image": ""
     }
   ]
 }
