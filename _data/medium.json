@@ -1,1 +1,83 @@
-{"handle": "", "posts": []}
+{
+  "handle": "@tanya_srivastava",
+  "posts": [
+    {
+      "title": "What Does Cadence ChipStack AI Super Agent Actually Do?",
+      "url": "https://medium.com/@tanya_srivastava/what-does-cadence-chipstack-ai-super-agent-actually-do-4841e194d453",
+      "date": "Fri, 24 Jul 2026",
+      "tags": [
+        "eda",
+        "semiconductor-engineering",
+        "chip-design",
+        "artificial-intelligence"
+      ],
+      "snippet": "A simple explanation for software, GPU, and validation engineers Disclaimer: This independent article is provided for educational and informational purposes only. It is not sponsored by, affiliated with, endorsed by, or ",
+      "image": "https://cdn-images-1.medium.com/max/1024/1*22mnUuMiCPCQiQHGAQPzcw.gif"
+    },
+    {
+      "title": "Is Your System Really Fast?",
+      "url": "https://medium.com/@tanya_srivastava/is-your-system-really-fast-9e6be9f2bee2",
+      "date": "Fri, 24 Jul 2026",
+      "tags": [
+        "automation-testing",
+        "software-engineering",
+        "gpu",
+        "distributed-systems"
+      ],
+      "snippet": "Why Burst Performance and Sustained Performance Tell Different Stories Your benchmark says the system is fast. Great. But will it still be fast an hour later? What happens when traffic suddenly doubles? What if a GPU rea",
+      "image": "https://cdn-images-1.medium.com/max/1024/1*10Jrg4uuZWoQ_pd0hU33Hw.png"
+    },
+    {
+      "title": "Building Your First MCP Server in Python: A Step-by-Step Guide",
+      "url": "https://medium.com/@tanya_srivastava/building-your-first-mcp-server-in-python-a-step-by-step-guide-b7cd8f3d9838",
+      "date": "Thu, 23 Jul 2026",
+      "tags": [
+        "gpu",
+        "ai-agent",
+        "model-context-protocol",
+        "infrastructure"
+      ],
+      "snippet": "Create tools, resources, and prompts, test them with MCP Inspector, and understand what happens behind the scenes You have learned what the Model Context Protocol is. You understand that an MCP application generally invo",
+      "image": "https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=b7cd8f3d9838"
+    },
+    {
+      "title": "Model Context Protocol (MCP) Explained: A Beginner’s Guide",
+      "url": "https://medium.com/@tanya_srivastava/model-context-protocol-mcp-explained-a-beginners-guide-764b342fbb80",
+      "date": "Thu, 23 Jul 2026",
+      "tags": [
+        "ai-agent",
+        "artificial-intelligence",
+        "model-context-protocol",
+        "python"
+      ],
+      "snippet": "How MCP connects AI assistants to tools and data, how MCP servers work, and how to build and test your first Python MCP server step by step Note: The GPU validation workflows discussed below are generalized conceptual ex",
+      "image": "https://cdn-images-1.medium.com/max/1024/1*yLIOH074WfvxWo1cIX-6Wg.png"
+    },
+    {
+      "title": "Kubernetes in a Minute: The Simplest Mental Model You Need",
+      "url": "https://medium.com/@tanya_srivastava/kubernetes-in-a-minute-the-simplest-mental-model-you-need-6ea46deecec1",
+      "date": "Wed, 22 Jul 2026",
+      "tags": [
+        "infrastructure-as-code",
+        "kubernetes-cluster",
+        "kubernetes",
+        "cicd-pipeline"
+      ],
+      "snippet": "Kubernetes can seem intimidating because it comes with a large vocabulary: Pods, Nodes, Services, Deployments, schedulers, controllers, and clusters. But the basic idea is much simpler: Kubernetes decides where applicati",
+      "image": "https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=6ea46deecec1"
+    },
+    {
+      "title": "Building CI/CD Pipelines for GPU Validation",
+      "url": "https://medium.com/@tanya_srivastava/building-ci-cd-pipelines-for-gpu-validation-86b468130c48",
+      "date": "Tue, 21 Jul 2026",
+      "tags": [
+        "platform-engineering",
+        "gpu",
+        "ci-cd-pipeline",
+        "software-testing"
+      ],
+      "snippet": "A practical framework for test planning, hardware scheduling, artifact traceability, failure classification, and evidence-based quality gates Disclaimer: The views expressed in this article are my own. The architecture, ",
+      "image": "https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=86b468130c48"
+    }
+  ]
+}
