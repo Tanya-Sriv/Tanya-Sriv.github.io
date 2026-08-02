@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{% if page.title %}{{ page.title }} — {{ site.title }}{% else %}{{ site.title }} — GPU &amp; Embedded Systems{% endif %}</title>
 <meta name="description" content="{{ page.excerpt | default: site.description | strip_html | strip_newlines | truncate: 160 }}">
-<link rel="canonical" href="{{ page.url | absolute_url }}">
+<link rel="canonical" href="{{ page.canonical_url | default: page.url | absolute_url }}">
 {% if site.google_site_verification != "" %}<meta name="google-site-verification" content="{{ site.google_site_verification }}">{% endif %}
 {% if site.bing_site_verification != "" %}<meta name="msvalidate.01" content="{{ site.bing_site_verification }}">{% endif %}
 {% if site.ahrefs_site_verification != "" %}<meta name="ahrefs-site-verification" content="{{ site.ahrefs_site_verification }}">{% endif %}

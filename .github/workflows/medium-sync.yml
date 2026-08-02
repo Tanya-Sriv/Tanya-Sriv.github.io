@@ -10,12 +10,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Fetch Medium feed
+      - name: Fetch Medium feed and import posts
         run: python .github/scripts/medium_sync.py
       - name: Commit if changed
         run: |
           git config user.name "Tanya Srivastava"
           git config user.email "Tanya-Sriv@users.noreply.github.com"
-          git add _data/medium.json
-          git diff --cached --quiet || git commit -m "chore: sync Medium posts"
+          git add _data/medium.json _posts/
+          git diff --cached --quiet || git commit -m "chore: import new Medium posts"
           git push

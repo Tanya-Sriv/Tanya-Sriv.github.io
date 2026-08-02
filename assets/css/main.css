@@ -585,6 +585,8 @@ body.nav-pinned .nav-overlay { display: none; }
 .icon { vertical-align: -2px; margin-right: 3px; }
 
 /* ---------- Medium hub + manage page ---------- */
+.medium-origin { font-family: var(--mono); font-size: .78rem; color: var(--paper-dim);
+  margin: 2px 0 0; }
 .medium-badge {
   font-family: var(--mono); font-size: .68rem; letter-spacing: .06em;
   border: 1px solid var(--border); border-radius: 999px; padding: 1px 9px;
